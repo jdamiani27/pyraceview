@@ -1,8 +1,9 @@
 # import com.sportvision.motorsports.raceview.messages.perCarData.PerCarRaceStatusData;
 
-import MsgHeader
+from .MsgHeader import MsgHeader
 from numpy import uint32, float64
-from .util import BitBuffer, ByteArray
+from ..util.BitBuffer import BitBuffer
+from ..util.ByteArray import ByteArray
 
 
 class MsgRaceStatus(object):  # extends MsgBase
@@ -29,15 +30,15 @@ class MsgRaceStatus(object):  # extends MsgBase
         self._per_car_race_status = []  # PerCarRaceStatusData
         _loc3_ = BitBuffer(message)
         _loc3_.set_position(7)
-        self._vitc_time = float64(_loc3_.get_bits(BITS_VITC_TIME))
-        self._lap = _loc3_.get_bits(BITS_LAP)
-        self._flag = _loc3_.get_bits(BITS_FLAG)
-        self._number_cautions = _loc3_.get_bits(BITS_CAUTIONS)
-        self._last_flag_change_lap = _loc3_.get_bits(BITS_FLAG_LAP)
-        self._number_of_cars = _loc3_.get_bits(BITS_CARS)
-        self._sun_set_value = _loc3_.get_bits(BITS_SUNSET)
-        _loc3_.get_bits(BITS_RESERVED)
-        _loc4_ = uint32((header.size - PREAMBLE_SIZE_BYTES) // self._number_of_cars)
+        self._vitc_time = float64(_loc3_.get_bits(self.BITS_VITC_TIME))
+        self._lap = _loc3_.get_bits(self.BITS_LAP)
+        self._flag = _loc3_.get_bits(self.BITS_FLAG)
+        self._number_cautions = _loc3_.get_bits(self.BITS_CAUTIONS)
+        self._last_flag_change_lap = _loc3_.get_bits(self.BITS_FLAG_LAP)
+        self._number_of_cars = _loc3_.get_bits(self.BITS_CARS)
+        self._sun_set_value = _loc3_.get_bits(self.BITS_SUNSET)
+        _loc3_.get_bits(self.BITS_RESERVED)
+        _loc4_ = uint32((header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars)
         _loc5_ = 0
         while _loc5_ < self._number_of_cars:
             self._per_car_race_status.append(PerCarRaceStatusData.readData(_loc3_, _loc4_))
