@@ -29,7 +29,7 @@ class BitBuffer(object):
 
         if self.bit_position != 0:
             _loc3_ = uint32(min(8 - self.bit_position, param1))
-            _loc4_ = uint32(self.extract_bits_from_byte(self.currentByte, self.bit_position, _loc3_))
+            _loc4_ = uint32(self.extract_bits_from_byte(self.current_byte, self.bit_position, _loc3_))
             _loc2_ = uint32(_loc2_ | _loc4_)
             self.bit_position = self.bit_position + _loc3_
             self.bit_position = self.bit_position % 8
