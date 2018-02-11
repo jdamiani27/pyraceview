@@ -1,9 +1,9 @@
 class MsgHeader(object):
 
     def __init__(self, message):
-        self._sync = message.read_unsigned_byte()
-        self._clock = message.read_unsigned_byte()
-        self._size = message.read_unsigned_byte()
+        self._sync = message.read_unsigned_short()
+        self._clock = message.read_unsigned_short()
+        self._size = message.read_unsigned_short()
         self._byteType = chr(message.read_unsigned_byte())
 
     @property
