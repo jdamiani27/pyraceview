@@ -1,9 +1,6 @@
-# import com.sportvision.motorsports.raceview.messages.perCarData.PerCarRaceStatusData;
-
-from .MsgHeader import MsgHeader
 from numpy import uint32, float64
-from ..util.BitBuffer import BitBuffer
-from ..util.ByteArray import ByteArray
+from ..util import BitBuffer
+from ..percar import PerCarRaceStatusData
 
 
 class MsgRaceStatus(object):  # extends MsgBase
@@ -41,7 +38,7 @@ class MsgRaceStatus(object):  # extends MsgBase
         _loc4_ = uint32((header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars)
         _loc5_ = 0
         while _loc5_ < self._number_of_cars:
-            self._per_car_race_status.append(PerCarRaceStatusData.readData(_loc3_, _loc4_))
+            self._per_car_race_status.append(PerCarRaceStatusData(_loc3_, _loc4_))
             _loc5_ += 1
 
     @property
