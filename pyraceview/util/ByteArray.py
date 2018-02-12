@@ -13,6 +13,9 @@ class ByteArray(object):
     def read_unsigned_short(self):
         return self.read(np.uint16)
 
+    def read_utf_bytes(self, length):
+        return self.read(np.dtype(('S', length))).decode('utf-8')
+
     def read(self, dtype):
         val = np.frombuffer(self.buffer, dtype=dtype, count=1)[0]
         self.position += val.itemsize
