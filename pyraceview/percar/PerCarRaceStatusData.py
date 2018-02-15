@@ -46,13 +46,13 @@ class PerCarRaceStatusData(object):
     PIT_IN = float64(8)
     PIT_OUT = float64(7)
 
-    def __init__(self, param1:BitBuffer, param2:uint):
+    def __init__(self, param1, param2):
         self._is_version_3 = False
         self._fuel = -1
         self._lap_fraction = float64(-1)
         self._steer_angle = -1
 
-        #Util.ASSERT(param2 == VERSION1_SIZE_BYTES || param2 == VERSION2_SIZE_BYTES || param2 == VERSION3_SIZE_BYTES,"RaceStatusMessage size error")
+        assert param2 == self.VERSION1_SIZE_BYTES or param2 == self.VERSION2_SIZE_BYTES or param2 == self.VERSION3_SIZE_BYTES, "RaceStatusMessage size error"
         self._id = param1.get_bits(self.BITS_CAR_NUMBER)
         self._status = param1.get_bits(self.BITS_STATUS)
         self._tol_type = param1.get_bits(self.BITS_TOL_TYPE)
@@ -106,7 +106,7 @@ class PerCarRaceStatusData(object):
 
     @property
     def speed(self):
-        return float64(self._speed / 1000) if _is_version_3 else float64(self._speed)
+        return float64(self._speed / 1000) if self._is_version_3 else float64(self._speed)
 
     @property
     def throttle(self):

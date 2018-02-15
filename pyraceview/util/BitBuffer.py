@@ -5,7 +5,7 @@ class BitBuffer(object):
 
     def __init__(self, byte_array):
         self.buffer = byte_array
-        self.bit_position = 0
+        self.bit_position = uint32(0)
 
     def extract_bits_from_byte(self, param1, param2, param3):
         _loc4_ = 255 >> 8 - param3
@@ -14,7 +14,8 @@ class BitBuffer(object):
         _loc5_ = _loc5_ & _loc4_
         return _loc5_
 
-    def make_bits_signed(self, param1, param2):
+    @staticmethod
+    def make_bits_signed(param1, param2):
         _loc3_ = param1 << 32 - param2 >> 32 - param2
         return _loc3_
 
