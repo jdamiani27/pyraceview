@@ -55,3 +55,7 @@ class MsgLapInfo(object):
     @property
     def lead_changes(self):
         return self._lead_changes
+
+    @property
+    def vitc_time(self):
+        return self._vitc_time
