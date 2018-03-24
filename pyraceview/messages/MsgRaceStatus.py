@@ -21,8 +21,6 @@ class MsgRaceStatus(object):  # extends MsgBase
                                                  + BITS_SUNSET
                                                  + BITS_RESERVED) // 8)
 
-    # private var _clock:Number;
-
     def __init__(self, header, message):
         self._per_car_race_status = []  # PerCarRaceStatusData
         _loc3_ = BitBuffer(message)
@@ -56,10 +54,6 @@ class MsgRaceStatus(object):  # extends MsgBase
     @property
     def vitc_time(self):
         return self._vitc_time
-
-    @property
-    def clock(self):
-        return self._clock
 
     @property
     def lap(self):
