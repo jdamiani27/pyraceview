@@ -23,3 +23,7 @@ class MsgCupInfo(object):
     @property
     def per_car_points(self):
         return self._per_car_points
+
+    @property
+    def lap(self):
+        return self._lap
