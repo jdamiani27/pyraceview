@@ -22,3 +22,7 @@ class MsgCarStats(object):
     @property
     def car_data(self):
         return self._car_data
+
+    @property
+    def vitc_time(self):
+        return self._vitc_time
