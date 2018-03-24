@@ -1,4 +1,4 @@
-from numpy import uint32
+from numpy import uint32, int32
 
 
 class BitBuffer(object):
@@ -16,7 +16,7 @@ class BitBuffer(object):
 
     @staticmethod
     def make_bits_signed(param1, param2):
-        _loc3_ = param1 << 32 - param2 >> 32 - param2
+        _loc3_ = int32(param1 << 32 - param2) >> 32 - param2
         return _loc3_
 
     def set_position(self, position):
