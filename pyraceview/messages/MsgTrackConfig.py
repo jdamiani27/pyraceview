@@ -8,11 +8,6 @@ class MsgTrackConfig(object):  # extends MsgBase
     TRACKCONFIG_BITS_ORIGIN_Z = uint32(32)
     TRACKCONFIG_BITS_TRACK_NAME = uint32(64)
 
-    # private var _localOriginX:int
-    # private var _localOriginY:int
-    # private var _localOriginZ:int
-    # private var _trackName:String
-
     def __init__(self, msg_header, byte_array):
         # super(param1)
         _loc3_ = BitBuffer(byte_array)
