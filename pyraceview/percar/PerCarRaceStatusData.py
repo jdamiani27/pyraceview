@@ -130,4 +130,4 @@ class PerCarRaceStatusData(object):
 
     @property
     def lapFraction(self):
-        return self._lapFraction
+        return self._lap_fraction
