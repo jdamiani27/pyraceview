@@ -8,16 +8,16 @@ class MsgCarStats(object):
     NUMBER_OF_CAR_BITS = uint32(8)
 
     def __init__(self, msg_header, byte_array):
-        self._car_data = [] #PerCarStatsData
-        _loc3_ = BitBuffer(byte_array)
-        _loc3_.set_position(7)
-        self._vitcTime = _loc3_.get_bits(self.CAR_POSITION_VITC_TIME_BITS)
-        self._number_of_cars = _loc3_.get_bits(self.NUMBER_OF_CAR_BITS)
-        _loc4_ = 0
+        self._car_data = [] # PerCarStatsData
+        bit_buffer = BitBuffer(byte_array)
+        bit_buffer.set_position(7)
+        self._vitc_time = bit_buffer.get_bits(self.CAR_POSITION_VITC_TIME_BITS)
+        self._number_of_cars = bit_buffer.get_bits(self.NUMBER_OF_CAR_BITS)
+        i = 0
 
-        while _loc4_ < self._number_of_cars:
-            self._car_data.append(PerCarStatsData(_loc3_))
-            _loc4_ += 1
+        while i < self._number_of_cars:
+            self._car_data.append(PerCarStatsData(bit_buffer))
+            i += 1
 
     @property
     def car_data(self):
