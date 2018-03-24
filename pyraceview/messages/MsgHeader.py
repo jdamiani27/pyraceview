@@ -1,10 +1,14 @@
+from ..util import ByteArray
+
+
 class MsgHeader(object):
 
     def __init__(self, message):
-        self._sync = message.read_unsigned_short()
-        self._clock = message.read_unsigned_short()
-        self._size = message.read_unsigned_short()
-        self._byteType = chr(message.read_unsigned_byte())
+        msg_ba = ByteArray(message)
+        self._sync = msg_ba.read_unsigned_short()
+        self._clock = msg_ba.read_unsigned_short()
+        self._size = msg_ba.read_unsigned_short()
+        self._byteType = chr(msg_ba.read_unsigned_byte())
 
     @property
     def sync(self):
