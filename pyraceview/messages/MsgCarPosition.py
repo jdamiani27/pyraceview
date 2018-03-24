@@ -31,7 +31,7 @@ class MsgCarPosition(object):
         return self._car_reverse_lookup[car_id]
 
     @property
-    def vitcTime(self):
+    def vitc_time(self):
         return self._vitc_time
 
     @property
