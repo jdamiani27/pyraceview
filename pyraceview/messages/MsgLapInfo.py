@@ -14,23 +14,23 @@ class MsgLapInfo(object):
     LAPINFO_BITS_RESERVED = uint32(3)
 
     def __init__(self, msg_header, byte_array):
-        self._per_car_lap_data = []
-        _loc3_ = BitBuffer(byte_array)
-        _loc3_.set_position(7)
-        self._vitc_time = _loc3_.get_bits(self.LAPINFO_BITS_VITC_TIME)
-        self._lap = _loc3_.get_bits(self.LAPINFO_BITS_LAP)
-        self._num_cars = _loc3_.get_bits(self.LAPINFO_BITS_NUM_CARS)
-        self._lead_changes = _loc3_.get_bits(self.LAPINFO_BITS_LEAD_CHANGES)
-        self._num_leaders = _loc3_.get_bits(self.LAPINFO_BITS_NUM_LEADERS)
-        self._num_cautions = _loc3_.get_bits(self.LAPINFO_BITS_NUM_CAUTIONS)
-        self._last_flag_change_lap = _loc3_.get_bits(self.LAPINFO_BITS_FLAG_LAP)
-        _loc3_.get_bits(self.LAPINFO_BITS_RESERVED)
+        self._per_car_lap_data = [] # PerCarLapData
+        bit_buffer = BitBuffer(byte_array)
+        bit_buffer.set_position(7)
+        self._vitc_time = bit_buffer.get_bits(self.LAPINFO_BITS_VITC_TIME)
+        self._lap = bit_buffer.get_bits(self.LAPINFO_BITS_LAP)
+        self._num_cars = bit_buffer.get_bits(self.LAPINFO_BITS_NUM_CARS)
+        self._lead_changes = bit_buffer.get_bits(self.LAPINFO_BITS_LEAD_CHANGES)
+        self._num_leaders = bit_buffer.get_bits(self.LAPINFO_BITS_NUM_LEADERS)
+        self._num_cautions = bit_buffer.get_bits(self.LAPINFO_BITS_NUM_CAUTIONS)
+        self._last_flag_change_lap = bit_buffer.get_bits(self.LAPINFO_BITS_FLAG_LAP)
+        bit_buffer.get_bits(self.LAPINFO_BITS_RESERVED)
 
-        _loc4_ = 0
+        i = 0
 
-        while _loc4_ < self._num_cars:
-            self._per_car_lap_data.append(PerCarLapData(_loc3_))
-            _loc4_ += 1
+        while i < self._num_cars:
+            self._per_car_lap_data.append(PerCarLapData(bit_buffer))
+            i += 1
 
     @property
     def lap(self):
