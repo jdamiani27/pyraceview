@@ -1,2 +1,6 @@
 from .PerCarRaceStatusData import PerCarRaceStatusData
 from .PerCarPositionData import PerCarPositionData
+from .PerCarStatsData import PerCarStatsData
+from .PerCarPointsData import PerCarPointsData
+from .PerCarLapData import PerCarLapData
+from .PerCarPitStopExtendedData import PerCarPitStopExtendedData

@@ -2,3 +2,9 @@ from .MsgHeader import MsgHeader
 from .MsgRaceStatus import MsgRaceStatus
 from .MsgTrackConfig import MsgTrackConfig
 from .MsgCarPosition import MsgCarPosition
+from .MsgCarStats import MsgCarStats
+from .MsgPitLaneEvent import MsgPitLaneEvent
+from .MsgVitcToLap import MsgVitcToLap
+from .MsgCupInfo import MsgCupInfo
+from .MsgLapInfo import MsgLapInfo
+from .MsgPitLaneExtended import MsgPitLaneExtended
