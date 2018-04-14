@@ -26,8 +26,7 @@ class PerCarPositionData(object):
     POS_Z_RESOLUTION = float64(0.05)
     NORM_X_RESOLUTION = float64(180 / 2**BITS_ANGLE_ENCODED_NORM_X)
     NORM_Y_RESOLUTION = float64(180 / 2**BITS_ANGLE_ENCODED_NORM_Y)
-    HEADING_RESOLUTION = float64(180 / 2**BITS_HEADING - uint32(1))
-
+    HEADING_RESOLUTION = float64(180 / 2**(BITS_HEADING - uint32(1)))
 
     def __init__(self, bit_buffer):
         self._car_id = bit_buffer.get_bits(self.BITS_CAR_NUM)
