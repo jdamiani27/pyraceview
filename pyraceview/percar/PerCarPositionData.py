@@ -1,6 +1,3 @@
-# import com.sportvision.motorsports.raceview.api.util.ObjectPool;
-# import com.sportvision.motorsports.raceview.util.BitBuffer;
-# import flash.geom.Vector3D;
 import math
 from numpy import uint32, float64, pi
 from ..util import BitBuffer, Vector3D
