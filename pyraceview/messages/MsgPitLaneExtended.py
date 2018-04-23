@@ -6,23 +6,24 @@ class MsgPitLaneExtended(object):
 
     def __init__(self, msg_header, byte_array):
         self._pits = [] # CarEntry
-        _loc3_ = byte_array.endian
+        endian = byte_array.endian
         byte_array.position = 7
-        
-        byte_array.endian = Endian.LITTLE_ENDIAN if (_loc3_ == Endian.BIG_ENDIAN) else Endian.BIG_ENDIAN
-        self._vitc = byte_array.read_unsigned_int()
+
+        byte_array.endian = Endian.LITTLE_ENDIAN if (endian == Endian.BIG_ENDIAN) else Endian.BIG_ENDIAN
+        self._vitc_time = byte_array.read_unsigned_int()
         self._num_cars = byte_array.read_unsigned_byte()
-        _loc5_ = 0
 
-        while _loc5_ < self._num_cars:
+        i = 0
+
+        while i < self._num_cars:
             self._pits.append(CarEntry(byte_array))
-            _loc5_ += 1
+            i += 1
 
-        byte_array.endian = _loc3_
+        byte_array.endian = endian
 
     @property
-    def vitc(self):
-        return self._vitc
+    def vitc_time(self):
+        return self._vitc_time
 
     @property
     def num_cars(self):
@@ -40,12 +41,13 @@ class CarEntry(object):
     def __init__(self, byte_array):
         self._pits = [] # PerCarPitStopExtendedData
         self._car_id = byte_array.read_unsigned_byte()
-        _loc2_ = byte_array.read_byte()
-        _loc3_ = 0
+        self._num_cars = byte_array.read_byte()
 
-        while _loc3_ < _loc2_:
+        i = 0
+
+        while i < self._num_cars:
             self._pits.append(PerCarPitStopExtendedData(byte_array))
-            _loc3_ += 1
+            i += 1
 
     @property
     def car_id(self):
