@@ -46,40 +46,40 @@ class PerCarRaceStatusData(object):
     PIT_IN = float64(8)
     PIT_OUT = float64(7)
 
-    def __init__(self, param1, param2):
+    def __init__(self, bit_buffer, byte_size):
         self._is_version_3 = False
         self._fuel = -1
         self._lap_fraction = float64(-1)
         self._steer_angle = -1
 
-        assert param2 == self.VERSION1_SIZE_BYTES or param2 == self.VERSION2_SIZE_BYTES or param2 == self.VERSION3_SIZE_BYTES, "RaceStatusMessage size error"
-        self._id = param1.get_bits(self.BITS_CAR_NUMBER)
-        self._status = param1.get_bits(self.BITS_STATUS)
-        self._tol_type = param1.get_bits(self.BITS_TOL_TYPE)
-        self._time_off_leader = float64(param1.get_bits(self.BITS_TOL))
-        self._event = param1.get_bits(self.BITS_EVENT)
+        assert byte_size == self.VERSION1_SIZE_BYTES or byte_size == self.VERSION2_SIZE_BYTES or byte_size == self.VERSION3_SIZE_BYTES, "RaceStatusMessage size error"
+        self._id = bit_buffer.get_bits(self.BITS_CAR_NUMBER)
+        self._status = bit_buffer.get_bits(self.BITS_STATUS)
+        self._tol_type = bit_buffer.get_bits(self.BITS_TOL_TYPE)
+        self._time_off_leader = float64(bit_buffer.get_bits(self.BITS_TOL))
+        self._event = bit_buffer.get_bits(self.BITS_EVENT)
 
-        if param2 == self.VERSION3_SIZE_BYTES:
-            self._speed = param1.get_bits(self.BITS_SPEED_VERSION3)
+        if byte_size == self.VERSION3_SIZE_BYTES:
+            self._speed = bit_buffer.get_bits(self.BITS_SPEED_VERSION3)
             self._is_version_3 = True
         else:
-            self._speed = param1.get_bits(self.BITS_SPEED)
+            self._speed = bit_buffer.get_bits(self.BITS_SPEED)
 
-        self._throttle = param1.get_bits(self.BITS_THROTTLE)
-        self._brake = param1.get_bits(self.BITS_BRAKE)
-        self._rpm = param1.get_bits(self.BITS_RPM) * 4
+        self._throttle = bit_buffer.get_bits(self.BITS_THROTTLE)
+        self._brake = bit_buffer.get_bits(self.BITS_BRAKE)
+        self._rpm = bit_buffer.get_bits(self.BITS_RPM) * 4
 
-        if param2 == self.VERSION1_SIZE_BYTES:
-            param1.get_bits(self.BITS_RESERVED_VERSION1)
-        elif (param2 == self.VERSION2_SIZE_BYTES) or (param2 == self.VERSION3_SIZE_BYTES):
-            self._fuel = param1.get_bits(self.BITS_FUEL)
-            self._lap_fraction = param1.get_bits(self.BITS_LAP_FRACTION) / 100000
-            self._steer_angle = param1.get_bits(self.BITS_STEERING) - 64
+        if byte_size == self.VERSION1_SIZE_BYTES:
+            bit_buffer.get_bits(self.BITS_RESERVED_VERSION1)
+        elif (byte_size == self.VERSION2_SIZE_BYTES) or (byte_size == self.VERSION3_SIZE_BYTES):
+            self._fuel = bit_buffer.get_bits(self.BITS_FUEL)
+            self._lap_fraction = bit_buffer.get_bits(self.BITS_LAP_FRACTION) / 100000
+            self._steer_angle = bit_buffer.get_bits(self.BITS_STEERING) - 64
 
-        if param2 == self.VERSION2_SIZE_BYTES:
-            param1.get_bits(self.BITS_RESERVED_VERSION2)
-        elif param2 == self.VERSION3_SIZE_BYTES:
-            param1.get_bits(self.BITS_RESERVED_VERSION3)
+        if byte_size == self.VERSION2_SIZE_BYTES:
+            bit_buffer.get_bits(self.BITS_RESERVED_VERSION2)
+        elif byte_size == self.VERSION3_SIZE_BYTES:
+            bit_buffer.get_bits(self.BITS_RESERVED_VERSION3)
 
     @property
     def id(self):
