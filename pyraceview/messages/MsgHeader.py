@@ -8,7 +8,7 @@ class MsgHeader(object):
         self._sync = msg_ba.read_unsigned_short()
         self._clock = msg_ba.read_unsigned_short()
         self._size = msg_ba.read_unsigned_short()
-        self._byteType = chr(msg_ba.read_unsigned_byte())
+        self._byte_type = chr(msg_ba.read_unsigned_byte())
 
     @property
     def sync(self):
@@ -23,5 +23,5 @@ class MsgHeader(object):
         return self._size
 
     @property
-    def byteType(self):
-        return self._byteType
+    def byte_type(self):
+        return self._byte_type

@@ -129,5 +129,5 @@ class PerCarRaceStatusData(object):
         return self._steer_angle
 
     @property
-    def lapFraction(self):
+    def lap_fraction(self):
         return self._lap_fraction
