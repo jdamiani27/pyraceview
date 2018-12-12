@@ -109,8 +109,10 @@ class PerCarPitStopExtendedData(object):
     def pit_group(self):
         return self._pit_group
 
+    @property
     def tires_is_estimate(self):
         return (self._flags & self.BITMASK_TIRES_IS_ESTIMATE) != 0
 
+    @property
     def abnormal_stop(self):
         return (self._flags & self.BITMASK_ABNORMAL_PIT) != 0
