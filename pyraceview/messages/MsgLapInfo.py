@@ -1,5 +1,5 @@
 from numpy import uint32
-from ..util import BitBuffer
+from ..util import BitBuffer, ByteArray
 from ..percar import PerCarLapData
 
 
@@ -13,9 +13,9 @@ class MsgLapInfo(object):
     LAPINFO_BITS_FLAG_LAP = uint32(10)
     LAPINFO_BITS_RESERVED = uint32(3)
 
-    def __init__(self, msg_header, byte_array):
+    def __init__(self, msg_bytes):
         self._per_car_lap_data = [] # PerCarLapData
-        bit_buffer = BitBuffer(byte_array)
+        bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._vitc_time = bit_buffer.get_bits(self.LAPINFO_BITS_VITC_TIME)
         self._lap = bit_buffer.get_bits(self.LAPINFO_BITS_LAP)

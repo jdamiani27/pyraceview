@@ -1,5 +1,5 @@
 from numpy import uint32
-from ..util import BitBuffer
+from ..util import BitBuffer, ByteArray
 
 
 class MsgTrackConfig(object):
@@ -8,7 +8,8 @@ class MsgTrackConfig(object):
     TRACKCONFIG_BITS_ORIGIN_Z = uint32(32)
     TRACKCONFIG_BITS_TRACK_NAME = uint32(64)
 
-    def __init__(self, msg_header, byte_array):
+    def __init__(self, msg_bytes):
+        byte_array = ByteArray(msg_bytes)
         bit_buffer = BitBuffer(byte_array)
         bit_buffer.set_position(7)
         self._local_origin_x = bit_buffer.get_bits(self.TRACKCONFIG_BITS_ORIGIN_X)

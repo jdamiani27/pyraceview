@@ -1,5 +1,5 @@
 from numpy import uint32, float64
-from ..util import BitBuffer
+from ..util import BitBuffer, ByteArray
 from ..percar import PerCarRaceStatusData
 
 
@@ -21,9 +21,9 @@ class MsgRaceStatus(object):  # extends MsgBase
                                                  + BITS_SUNSET
                                                  + BITS_RESERVED) // 8)
 
-    def __init__(self, msg_header, byte_array):
+    def __init__(self, msg_bytes, msg_header):
         self._per_car_race_status = []  # PerCarRaceStatusData
-        bit_buffer = BitBuffer(byte_array)
+        bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._vitc_time = bit_buffer.get_bits(self.BITS_VITC_TIME)
         self._lap = bit_buffer.get_bits(self.BITS_LAP)

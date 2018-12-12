@@ -1,5 +1,5 @@
 from numpy import uint32
-from ..util import BitBuffer
+from ..util import BitBuffer, ByteArray
 from ..percar import PerCarPointsData
 
 
@@ -7,9 +7,9 @@ class MsgCupInfo(object):
     CUP_POINTS_LAP_BITS = uint32(10)
     CUP_POINTS_NUM_CAR_BITS = uint32(6)
 
-    def __init__(self, msg_header, byte_array):
+    def __init__(self, msg_bytes):
         self._per_car_points = [] # PerCarPointsData
-        bit_buffer = BitBuffer(byte_array)
+        bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._lap = bit_buffer.get_bits(self.CUP_POINTS_LAP_BITS)
         self._num_cars = bit_buffer.get_bits(self.CUP_POINTS_NUM_CAR_BITS)

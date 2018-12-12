@@ -3,8 +3,8 @@ from ..util import ByteArray
 
 class MsgHeader(object):
 
-    def __init__(self, message):
-        msg_ba = ByteArray(message)
+    def __init__(self, msg_bytes):
+        msg_ba = ByteArray(msg_bytes)
         self._sync = msg_ba.read_unsigned_short()
         self._clock = msg_ba.read_unsigned_short()
         self._size = msg_ba.read_unsigned_short()

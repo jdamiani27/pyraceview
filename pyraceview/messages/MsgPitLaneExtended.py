@@ -1,11 +1,12 @@
-from ..util import Endian
+from ..util import Endian, ByteArray
 from ..percar import PerCarPitStopExtendedData
 
 
 class MsgPitLaneExtended(object):
 
-    def __init__(self, msg_header, byte_array):
+    def __init__(self, msg_bytes):
         self._pits = [] # CarEntry
+        byte_array = ByteArray(msg_bytes)
         endian = byte_array.endian
         byte_array.position = 7
 

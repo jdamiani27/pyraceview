@@ -1,5 +1,5 @@
 from numpy import uint32
-from ..util import BitBuffer
+from ..util import BitBuffer, ByteArray
 
 
 class MsgVitcToLap(object):
@@ -9,11 +9,11 @@ class MsgVitcToLap(object):
     VITCLAP_VITC_BITS = uint32(17)
     VITCLAP_FLAG_BITS = uint32(3)
 
-    def __init__(self, msg_header, byte_array):
+    def __init__(self, msg_bytes):
         self._vitc_indices = []
         self._flags = []
 
-        bit_buffer = BitBuffer(byte_array)
+        bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._start_idx = bit_buffer.get_bits(self.VITCLAP_START_LAP_BITS)
         self._num_lap_entries = bit_buffer.get_bits(self.VITCLAP_NUM_ENTRIES_BITS)
