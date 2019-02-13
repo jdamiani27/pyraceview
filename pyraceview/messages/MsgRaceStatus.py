@@ -44,23 +44,23 @@ class MsgRaceStatus(object):  # extends MsgBase
 
     @property
     def flag(self):
-        return self._flag
+        return int(self._flag)
 
     @property
     def last_flag_change_lap(self):
-        return self._last_flag_change_lap
+        return int(self._last_flag_change_lap)
 
     @property
     def number_cautions(self):
-        return self._number_cautions
+        return int(self._number_cautions)
 
     @property
     def vitc_time(self):
-        return self._vitc_time
+        return int(self._vitc_time)
 
     @property
     def lap(self):
-        return self._lap
+        return int(self._lap)
 
     @property
     def per_car_race_status(self):
@@ -68,8 +68,8 @@ class MsgRaceStatus(object):  # extends MsgBase
 
     @property
     def number_of_cars(self):
-        return self._number_of_cars
+        return int(self._number_of_cars)
 
     @property
     def sun_set_value(self):
-        return self._sun_set_value
+        return int(self._sun_set_value)

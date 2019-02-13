@@ -82,52 +82,53 @@ class PerCarRaceStatusData(object):
             bit_buffer.get_bits(self.BITS_RESERVED_VERSION3)
 
     @property
-    def id(self):
-        return self._id
+    def car_id(self):
+        return int(self._id)
 
     @property
     def status(self):
-        if self._status == CarStats.CAR_STATUS_UNKNOWN:
+        if int(self._status) == CarStats.CAR_STATUS_UNKNOWN:
             return CarStats.CAR_STATUS_PRERACE
         else:
-            return self._status
+            return int(self._status)
 
     @property
     def tol_type(self):
-        return self._tol_type
+        return int(self._tol_type)
 
     @property
     def time_off_leader(self):
-        return self._time_off_leader
+        return float(self._time_off_leader)
 
     @property
     def event(self):
-        return self._event
+        return int(self._event)
 
     @property
     def speed(self):
-        return float64(self._speed / 1000) if self._is_version_3 else float64(self._speed)
+        s = float64(self._speed / 1000) if self._is_version_3 else float64(self._speed)
+        return float(s)
 
     @property
     def throttle(self):
-        return self._throttle
+        return int(self._throttle)
 
     @property
     def brake(self):
-        return self._brake
+        return int(self._brake)
 
     @property
     def rpm(self):
-        return self._rpm
+        return int(self._rpm)
 
     @property
     def fuel(self):
-        return self._fuel
+        return int(self._fuel)
 
     @property
     def steer_angle(self):
-        return self._steer_angle
+        return int(self._steer_angle)
 
     @property
     def lap_fraction(self):
-        return self._lap_fraction
+        return float(self._lap_fraction)
