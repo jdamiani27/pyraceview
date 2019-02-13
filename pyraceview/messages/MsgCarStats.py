@@ -25,4 +25,4 @@ class MsgCarStats(object):
 
     @property
     def vitc_time(self):
-        return self._vitc_time
+        return int(self._vitc_time)

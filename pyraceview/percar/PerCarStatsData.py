@@ -18,21 +18,21 @@ class PerCarStatsData(object):
         param1.get_bits(self.RESERVED)
 
     @property
-    def id(self):
-        return self._id
+    def car_id(self):
+        return int(self._id)
 
     @property
     def top_speed(self):
-        return self._top_speed
+        return float(self._top_speed)
 
     @property
     def fastest_time(self):
-        return self._fastest_time
+        return int(self._fastest_time)
 
     @property
     def average_lap(self):
-        return self._average_lap
+        return int(self._average_lap)
 
     @property
     def average_speed(self):
-        return self._average_speed
+        return float(self._average_speed)
