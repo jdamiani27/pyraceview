@@ -10,6 +10,12 @@ class MsgHeader(object):
         self._size = msg_ba.read_unsigned_short()
         self._byte_type = chr(msg_ba.read_unsigned_byte())
 
+    def __str__(self):
+        return 'Sync: {}, Clock: {}, Size: {}, Type: {}'.format(self.sync,
+                                                                self.clock,
+                                                                self.size,
+                                                                self.byte_type)
+
     @property
     def sync(self):
         return self._sync
