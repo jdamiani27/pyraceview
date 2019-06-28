@@ -9,10 +9,10 @@ class PerCarPitStopExtendedData(object):
     FLAG_BITMASK = uint32(15)
 
     def __init__(self, byte_array):
-        self._race_lap = byte_array.read_short()
-        self._lap = byte_array.read_short()
-        self._rank_in = byte_array.read_byte()
-        self._rank_out = byte_array.read_byte()
+        self._race_lap = int(byte_array.read_short())
+        self._lap = int(byte_array.read_short())
+        self._rank_in = int(byte_array.read_byte())
+        self._rank_out = int(byte_array.read_byte())
 
         FLAG_CONVERSION = {1 : Flag.PRE_RACE,
                            2 : Flag.GREEN,
@@ -29,25 +29,25 @@ class PerCarPitStopExtendedData(object):
             self._flag = Flag.UNDEFINED
 
         if (_loc2_ & self.EXPANDED_TIME_FIELDS_BITMASK):
-            self._to_stop = byte_array.read_unsigned_int() / 10
-            self._to_left_jack_up = byte_array.read_unsigned_int() / 10
-            self._to_left_jack_dn = byte_array.read_unsigned_int() / 10
-            self._to_right_jack_up = byte_array.read_unsigned_int() / 10
-            self._to_right_jack_dn = byte_array.read_unsigned_int() / 10
-            self._to_restart = byte_array.read_unsigned_int() / 10
-            self._to_exit = byte_array.read_unsigned_int() / 10
+            self._to_stop = float(byte_array.read_unsigned_int() / 10)
+            self._to_left_jack_up = float(byte_array.read_unsigned_int() / 10)
+            self._to_left_jack_dn = float(byte_array.read_unsigned_int() / 10)
+            self._to_right_jack_up = float(byte_array.read_unsigned_int() / 10)
+            self._to_right_jack_dn = float(byte_array.read_unsigned_int() / 10)
+            self._to_restart = float(byte_array.read_unsigned_int() / 10)
+            self._to_exit = float(byte_array.read_unsigned_int() / 10)
         else:
-            self._to_stop = byte_array.read_unsigned_short() / 10
-            self._to_left_jack_up = byte_array.read_unsigned_short() / 10
-            self._to_left_jack_dn = byte_array.read_unsigned_short() / 10
-            self._to_right_jack_up = byte_array.read_unsigned_short() / 10
-            self._to_right_jack_dn = byte_array.read_unsigned_short() / 10
-            self._to_restart = byte_array.read_unsigned_short() / 10
-            self._to_exit = byte_array.read_unsigned_short() / 10
+            self._to_stop = float(byte_array.read_unsigned_short() / 10)
+            self._to_left_jack_up = float(byte_array.read_unsigned_short() / 10)
+            self._to_left_jack_dn = float(byte_array.read_unsigned_short() / 10)
+            self._to_right_jack_up = float(byte_array.read_unsigned_short() / 10)
+            self._to_right_jack_dn = float(byte_array.read_unsigned_short() / 10)
+            self._to_restart = float(byte_array.read_unsigned_short() / 10)
+            self._to_exit = float(byte_array.read_unsigned_short() / 10)
 
-        self._tires = byte_array.read_byte()
-        self._flags = byte_array.read_byte()
-        self._pit_group = byte_array.read_byte()
+        self._tires = int(byte_array.read_byte())
+        self._flags = int(byte_array.read_byte())
+        self._pit_group = int(byte_array.read_byte())
 
     @property
     def race_lap(self):

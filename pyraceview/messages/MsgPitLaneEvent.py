@@ -5,8 +5,8 @@ class MsgPitLaneEvent(object):
     def __init__(self, msg_bytes):
         byte_array = ByteArray(msg_bytes)
         byte_array.position = 7
-        self._car_id = byte_array.read_unsigned_byte()
-        self._event_id = byte_array.read_unsigned_byte()
+        self._car_id = int(byte_array.read_unsigned_byte())
+        self._event_id = int(byte_array.read_unsigned_byte())
         byte_array.read_unsigned_byte()
 
     @property

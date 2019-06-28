@@ -7,8 +7,8 @@ class PerCarPointsData(object):
     CUP_POINTS_BITS_RESERVED = uint32(3)
 
     def __init__(self, bit_buffer):
-        self._id = bit_buffer.get_bits(self.CUP_POINTS_BITS_ID)
-        self._points = bit_buffer.get_bits(self.CUP_POINTS_BITS_DRIVER_POINTS)
+        self._car_id = int(bit_buffer.get_bits(self.CUP_POINTS_BITS_ID))
+        self._points = int(bit_buffer.get_bits(self.CUP_POINTS_BITS_DRIVER_POINTS))
         bit_buffer.get_bits(self.CUP_POINTS_BITS_RESERVED)
 
     @property

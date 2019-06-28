@@ -5,9 +5,9 @@ class MsgHeader(object):
 
     def __init__(self, msg_bytes):
         msg_ba = ByteArray(msg_bytes)
-        self._sync = msg_ba.read_unsigned_short()
-        self._clock = msg_ba.read_unsigned_short()
-        self._size = msg_ba.read_unsigned_short()
+        self._sync = int(msg_ba.read_unsigned_short())
+        self._clock = int(msg_ba.read_unsigned_short())
+        self._size = int(msg_ba.read_unsigned_short())
         self._byte_type = chr(msg_ba.read_unsigned_byte())
 
     def __str__(self):

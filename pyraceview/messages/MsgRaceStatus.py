@@ -26,13 +26,13 @@ class MsgRaceStatus(object):  # extends MsgBase
         self._per_car_race_status = []  # PerCarRaceStatusData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self._vitc_time = bit_buffer.get_bits(self.BITS_VITC_TIME)
-        self._lap = bit_buffer.get_bits(self.BITS_LAP)
-        self._flag = bit_buffer.get_bits(self.BITS_FLAG)
-        self._number_cautions = bit_buffer.get_bits(self.BITS_CAUTIONS)
-        self._last_flag_change_lap = bit_buffer.get_bits(self.BITS_FLAG_LAP)
-        self._number_of_cars = bit_buffer.get_bits(self.BITS_CARS)
-        self._sun_set_value = bit_buffer.get_bits(self.BITS_SUNSET)
+        self._vitc_time = int(bit_buffer.get_bits(self.BITS_VITC_TIME))
+        self._lap = int(bit_buffer.get_bits(self.BITS_LAP))
+        self._flag = int(bit_buffer.get_bits(self.BITS_FLAG))
+        self._number_cautions = int(bit_buffer.get_bits(self.BITS_CAUTIONS))
+        self._last_flag_change_lap = int(bit_buffer.get_bits(self.BITS_FLAG_LAP))
+        self._number_of_cars = int(bit_buffer.get_bits(self.BITS_CARS))
+        self._sun_set_value = int(bit_buffer.get_bits(self.BITS_SUNSET))
         bit_buffer.get_bits(self.BITS_RESERVED)
         msg_header = MsgHeader(msg_bytes)
         byte_size = uint32((msg_header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars)
@@ -44,23 +44,23 @@ class MsgRaceStatus(object):  # extends MsgBase
 
     @property
     def flag(self):
-        return int(self._flag)
+        return self._flag
 
     @property
     def last_flag_change_lap(self):
-        return int(self._last_flag_change_lap)
+        return self._last_flag_change_lap
 
     @property
     def number_cautions(self):
-        return int(self._number_cautions)
+        return self._number_cautions
 
     @property
     def vitc_time(self):
-        return int(self._vitc_time)
+        return self._vitc_time
 
     @property
     def lap(self):
-        return int(self._lap)
+        return self._lap
 
     @property
     def per_car_race_status(self):
@@ -68,8 +68,8 @@ class MsgRaceStatus(object):  # extends MsgBase
 
     @property
     def number_of_cars(self):
-        return int(self._number_of_cars)
+        return self._number_of_cars
 
     @property
     def sun_set_value(self):
-        return int(self._sun_set_value)
+        return self._sun_set_value

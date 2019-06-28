@@ -10,16 +10,16 @@ class PerCarLapData(object):
     LAPINFO_PER_CAR_BITS_LAP = uint32(6)
 
     def __init__(self, bit_buffer):
-        self._id = bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_CAR_NUMBER)
-        self._last_lap_time = bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAST_LAP_TIME)
-        self._fastest_lap_time = bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_FASTEST_LAP_TIME)
-        self._laps_led = bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_LED)
-        self._laps_in_top_10 = bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_IN_TOP_10)
-        self._rank = bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAP)
+        self._car_id = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_CAR_NUMBER))
+        self._last_lap_time = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAST_LAP_TIME))
+        self._fastest_lap_time = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_FASTEST_LAP_TIME))
+        self._laps_led = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_LED))
+        self._laps_in_top_10 = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_IN_TOP_10))
+        self._rank = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAP))
 
     @property
-    def id(self):
-        return self._id
+    def car_id(self):
+        return self._car_id
 
     @property
     def last_lap_time(self):

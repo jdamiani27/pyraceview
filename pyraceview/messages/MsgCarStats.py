@@ -11,8 +11,8 @@ class MsgCarStats(object):
         self._car_data = [] # PerCarStatsData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self._vitc_time = bit_buffer.get_bits(self.CAR_POSITION_VITC_TIME_BITS)
-        self._number_of_cars = bit_buffer.get_bits(self.NUMBER_OF_CAR_BITS)
+        self._vitc_time = int(bit_buffer.get_bits(self.CAR_POSITION_VITC_TIME_BITS))
+        self._number_of_cars = int(bit_buffer.get_bits(self.NUMBER_OF_CAR_BITS))
         i = 0
 
         while i < self._number_of_cars:
@@ -25,4 +25,4 @@ class MsgCarStats(object):
 
     @property
     def vitc_time(self):
-        return int(self._vitc_time)
+        return self._vitc_time

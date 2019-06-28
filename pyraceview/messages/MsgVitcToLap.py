@@ -15,15 +15,15 @@ class MsgVitcToLap(object):
 
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self._start_idx = bit_buffer.get_bits(self.VITCLAP_START_LAP_BITS)
-        self._num_lap_entries = bit_buffer.get_bits(self.VITCLAP_NUM_ENTRIES_BITS)
+        self._start_idx = int(bit_buffer.get_bits(self.VITCLAP_START_LAP_BITS))
+        self._num_lap_entries = int(bit_buffer.get_bits(self.VITCLAP_NUM_ENTRIES_BITS))
         bit_buffer.get_bits(self.VITCLAP_RESERVED)
 
         i = 0
 
         while i < self._num_lap_entries:
-            self._vitc_indices.append(bit_buffer.get_bits(self.VITCLAP_VITC_BITS))
-            self._flags.append(bit_buffer.get_bits(self.VITCLAP_FLAG_BITS))
+            self._vitc_indices.append(int(bit_buffer.get_bits(self.VITCLAP_VITC_BITS)))
+            self._flags.append(int(bit_buffer.get_bits(self.VITCLAP_FLAG_BITS)))
             i += 1
 
     @property
