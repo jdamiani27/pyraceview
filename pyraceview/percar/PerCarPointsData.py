@@ -12,8 +12,8 @@ class PerCarPointsData(object):
         bit_buffer.get_bits(self.CUP_POINTS_BITS_RESERVED)
 
     @property
-    def id(self):
-        return self._id
+    def car_id(self):
+        return self._car_id
 
     @property
     def points(self):
