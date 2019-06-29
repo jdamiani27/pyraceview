@@ -105,9 +105,13 @@ class PerCarPositionData(object):
         return self._norm_z
 
     @property
-    def normal(self):
-        return [self._norm_x, self._norm_y, self._norm_z]
+    def heading_x(self):
+        return float(self._heading.x)
 
     @property
-    def heading(self):
-        return self._heading 
+    def heading_y(self):
+        return float(self._heading.y)
+
+    @property
+    def heading_z(self):
+        return float(self._heading.z)
