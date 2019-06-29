@@ -14,12 +14,12 @@ class PerCarPitStopExtendedData(object):
         self._rank_in = int(byte_array.read_byte())
         self._rank_out = int(byte_array.read_byte())
 
-        FLAG_CONVERSION = {1 : Flag.PRE_RACE,
-                           2 : Flag.GREEN,
-                           3 : Flag.YELLOW,
-                           4 : Flag.RED,
-                           5 : Flag.CHECKERED,
-                           6 : Flag.WHITE}
+        FLAG_CONVERSION = {1: Flag.PRE_RACE,
+                           2: Flag.GREEN,
+                           3: Flag.YELLOW,
+                           4: Flag.RED,
+                           5: Flag.CHECKERED,
+                           6: Flag.WHITE}
 
         _loc2_ = byte_array.read_byte()
 
