@@ -14,14 +14,17 @@ class PerCarRaceStatusData(object):
     BITS_BRAKE = uint32(7)
     BITS_RPM = uint32(12)
     BITS_RESERVED_VERSION1 = uint32(3)
-    TOTAL_BITS_COMMON = uint32(BITS_CAR_NUMBER + BITS_STATUS
-                                               + BITS_TOL_TYPE
-                                               + BITS_TOL
-                                               + BITS_EVENT
-                                               + BITS_SPEED
-                                               + BITS_THROTTLE
-                                               + BITS_BRAKE
-                                               + BITS_RPM)
+    TOTAL_BITS_COMMON = uint32(
+        BITS_CAR_NUMBER
+        + BITS_STATUS
+        + BITS_TOL_TYPE
+        + BITS_TOL
+        + BITS_EVENT
+        + BITS_SPEED
+        + BITS_THROTTLE
+        + BITS_BRAKE
+        + BITS_RPM
+    )
     BITS_FUEL = uint32(7)
     BITS_LAP_FRACTION = uint32(17)
     BITS_STEERING = uint32(7)
@@ -30,18 +33,30 @@ class PerCarRaceStatusData(object):
     BITS_RESERVED_VERSION3 = uint32(10)
 
     VERSION1_SIZE_BYTES = uint32((TOTAL_BITS_COMMON + BITS_RESERVED_VERSION1) // 8)
-    VERSION2_SIZE_BYTES = uint32((TOTAL_BITS_COMMON + BITS_RESERVED_VERSION2
-                                                    + BITS_FUEL
-                                                    + BITS_LAP_FRACTION
-                                                    + BITS_STEERING
-                                                    + BITS_RESERVED_VERSION2) // 8)
+    VERSION2_SIZE_BYTES = uint32(
+        (
+            TOTAL_BITS_COMMON
+            + BITS_RESERVED_VERSION2
+            + BITS_FUEL
+            + BITS_LAP_FRACTION
+            + BITS_STEERING
+            + BITS_RESERVED_VERSION2
+        )
+        // 8
+    )
 
-    VERSION3_SIZE_BYTES = uint32((TOTAL_BITS_COMMON - BITS_SPEED
-                                                    + BITS_SPEED_VERSION3
-                                                    + BITS_FUEL
-                                                    + BITS_LAP_FRACTION
-                                                    + BITS_STEERING
-                                                    + BITS_RESERVED_VERSION3) // 8)
+    VERSION3_SIZE_BYTES = uint32(
+        (
+            TOTAL_BITS_COMMON
+            - BITS_SPEED
+            + BITS_SPEED_VERSION3
+            + BITS_FUEL
+            + BITS_LAP_FRACTION
+            + BITS_STEERING
+            + BITS_RESERVED_VERSION3
+        )
+        // 8
+    )
 
     PIT_IN = float64(8)
     PIT_OUT = float64(7)
@@ -52,7 +67,11 @@ class PerCarRaceStatusData(object):
         self._lap_fraction = float64(-1)
         self._steer_angle = -1
 
-        assert byte_size == self.VERSION1_SIZE_BYTES or byte_size == self.VERSION2_SIZE_BYTES or byte_size == self.VERSION3_SIZE_BYTES, "RaceStatusMessage size error"
+        assert (
+            byte_size == self.VERSION1_SIZE_BYTES
+            or byte_size == self.VERSION2_SIZE_BYTES
+            or byte_size == self.VERSION3_SIZE_BYTES
+        ), "RaceStatusMessage size error"
         self._id = bit_buffer.get_bits(self.BITS_CAR_NUMBER)
         self._status = bit_buffer.get_bits(self.BITS_STATUS)
         self._tol_type = bit_buffer.get_bits(self.BITS_TOL_TYPE)
@@ -71,7 +90,9 @@ class PerCarRaceStatusData(object):
 
         if byte_size == self.VERSION1_SIZE_BYTES:
             bit_buffer.get_bits(self.BITS_RESERVED_VERSION1)
-        elif (byte_size == self.VERSION2_SIZE_BYTES) or (byte_size == self.VERSION3_SIZE_BYTES):
+        elif (byte_size == self.VERSION2_SIZE_BYTES) or (
+            byte_size == self.VERSION3_SIZE_BYTES
+        ):
             self._fuel = bit_buffer.get_bits(self.BITS_FUEL)
             self._lap_fraction = bit_buffer.get_bits(self.BITS_LAP_FRACTION) / 100000
             self._steer_angle = bit_buffer.get_bits(self.BITS_STEERING) - 64

@@ -11,10 +11,16 @@ class PerCarLapData(object):
 
     def __init__(self, bit_buffer):
         self._car_id = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_CAR_NUMBER))
-        self._last_lap_time = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAST_LAP_TIME))
-        self._fastest_lap_time = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_FASTEST_LAP_TIME))
+        self._last_lap_time = int(
+            bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAST_LAP_TIME)
+        )
+        self._fastest_lap_time = int(
+            bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_FASTEST_LAP_TIME)
+        )
         self._laps_led = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_LED))
-        self._laps_in_top_10 = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_IN_TOP_10))
+        self._laps_in_top_10 = int(
+            bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAPS_IN_TOP_10)
+        )
         self._rank = int(bit_buffer.get_bits(self.LAPINFO_PER_CAR_BITS_LAP))
 
     @property

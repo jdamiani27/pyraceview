@@ -8,7 +8,7 @@ class MsgCupInfo(object):
     CUP_POINTS_NUM_CAR_BITS = uint32(6)
 
     def __init__(self, msg_bytes):
-        self._per_car_points = [] # PerCarPointsData
+        self._per_car_points = []  # PerCarPointsData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._lap = int(bit_buffer.get_bits(self.CUP_POINTS_LAP_BITS))

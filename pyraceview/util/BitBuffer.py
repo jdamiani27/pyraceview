@@ -2,7 +2,6 @@ from numpy import uint32, int32
 
 
 class BitBuffer(object):
-
     def __init__(self, byte_array):
         self.buffer = byte_array
         self.bit_position = uint32(0)
@@ -28,7 +27,11 @@ class BitBuffer(object):
         # partially unpacked byte
         if self.bit_position != 0:
             extract_size = uint32(min(8 - self.bit_position, bits_remaining))
-            unpacked_value = uint32(self.extract_bits_from_byte(self.current_byte, self.bit_position, extract_size))
+            unpacked_value = uint32(
+                self.extract_bits_from_byte(
+                    self.current_byte, self.bit_position, extract_size
+                )
+            )
             self.bit_position = (self.bit_position + extract_size) % 8
             bits_remaining -= extract_size
 
@@ -41,7 +44,9 @@ class BitBuffer(object):
         # If there are more bits left to read, partially unpack the next byte
         if bits_remaining > 0:
             self.current_byte = self.buffer.read_unsigned_byte()
-            extracted_bits = uint32(self.extract_bits_from_byte(self.current_byte, 0, bits_remaining))
+            extracted_bits = uint32(
+                self.extract_bits_from_byte(self.current_byte, 0, bits_remaining)
+            )
             unpacked_value = uint32(unpacked_value << bits_remaining | extracted_bits)
             self.bit_position += bits_remaining
 

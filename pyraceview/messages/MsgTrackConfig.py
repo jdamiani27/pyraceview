@@ -15,7 +15,9 @@ class MsgTrackConfig(object):
         self._local_origin_x = int(bit_buffer.get_bits(self.TRACKCONFIG_BITS_ORIGIN_X))
         self._local_origin_y = int(bit_buffer.get_bits(self.TRACKCONFIG_BITS_ORIGIN_Y))
         self._local_origin_z = int(bit_buffer.get_bits(self.TRACKCONFIG_BITS_ORIGIN_Z))
-        self._track_name = byte_array.read_utf_bytes(self.TRACKCONFIG_BITS_TRACK_NAME // uint32(8))
+        self._track_name = byte_array.read_utf_bytes(
+            self.TRACKCONFIG_BITS_TRACK_NAME // uint32(8)
+        )
 
     @property
     def local_origin_x(self):
