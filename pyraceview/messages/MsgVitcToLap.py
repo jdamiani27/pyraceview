@@ -19,12 +19,9 @@ class MsgVitcToLap(object):
         self._num_lap_entries = int(bit_buffer.get_bits(self.VITCLAP_NUM_ENTRIES_BITS))
         bit_buffer.get_bits(self.VITCLAP_RESERVED)
 
-        i = 0
-
-        while i < self._num_lap_entries:
+        for _ in range(self._num_lap_entries):
             self._vitc_indices.append(int(bit_buffer.get_bits(self.VITCLAP_VITC_BITS)))
             self._flags.append(int(bit_buffer.get_bits(self.VITCLAP_FLAG_BITS)))
-            i += 1
 
     @property
     def flags(self):
