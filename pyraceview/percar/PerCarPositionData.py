@@ -13,20 +13,23 @@ class PerCarPositionData(object):
     BITS_ANGLE_ENCODED_NORM_Y = uint32(12)
     BITS_HEADING = uint32(12)
     RESERVED_BITS = uint32(1)
-    CAR_SIZE = uint32(BITS_CAR_NUM + BITS_CAR_POS_X
-                                   + BITS_CAR_POS_Y
-                                   + BITS_CAR_POS_Z
-                                   + BITS_ANGLE_ENCODED_NORM_X
-                                   + BITS_ANGLE_ENCODED_NORM_Y
-                                   + BITS_HEADING
-                                   + RESERVED_BITS)
+    CAR_SIZE = uint32(
+        BITS_CAR_NUM
+        + BITS_CAR_POS_X
+        + BITS_CAR_POS_Y
+        + BITS_CAR_POS_Z
+        + BITS_ANGLE_ENCODED_NORM_X
+        + BITS_ANGLE_ENCODED_NORM_Y
+        + BITS_HEADING
+        + RESERVED_BITS
+    )
 
     POS_X_RESOLUTION = float64(0.1)
     POS_Y_RESOLUTION = float64(0.1)
     POS_Z_RESOLUTION = float64(0.05)
-    NORM_X_RESOLUTION = float64(180 / 2**BITS_ANGLE_ENCODED_NORM_X)
-    NORM_Y_RESOLUTION = float64(180 / 2**BITS_ANGLE_ENCODED_NORM_Y)
-    HEADING_RESOLUTION = float64(180 / 2**(BITS_HEADING - uint32(1)))
+    NORM_X_RESOLUTION = float64(180 / 2 ** BITS_ANGLE_ENCODED_NORM_X)
+    NORM_Y_RESOLUTION = float64(180 / 2 ** BITS_ANGLE_ENCODED_NORM_Y)
+    HEADING_RESOLUTION = float64(180 / 2 ** (BITS_HEADING - uint32(1)))
 
     def __init__(self, bit_buffer):
         self._car_id = int(bit_buffer.get_bits(self.BITS_CAR_NUM))
@@ -35,24 +38,43 @@ class PerCarPositionData(object):
         pos_x_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_X))
         pos_y_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_Y))
         pos_z_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_Z))
-        self._pos_x = float(BitBuffer.make_bits_signed(pos_x_unsign, self.BITS_CAR_POS_X) * self.POS_X_RESOLUTION)
-        self._pos_y = float(BitBuffer.make_bits_signed(pos_y_unsign, self.BITS_CAR_POS_Y) * self.POS_Y_RESOLUTION)
-        self._pos_z = float(BitBuffer.make_bits_signed(pos_z_unsign, self.BITS_CAR_POS_Z) * self.POS_Z_RESOLUTION)
+        self._pos_x = float(
+            BitBuffer.make_bits_signed(pos_x_unsign, self.BITS_CAR_POS_X)
+            * self.POS_X_RESOLUTION
+        )
+        self._pos_y = float(
+            BitBuffer.make_bits_signed(pos_y_unsign, self.BITS_CAR_POS_Y)
+            * self.POS_Y_RESOLUTION
+        )
+        self._pos_z = float(
+            BitBuffer.make_bits_signed(pos_z_unsign, self.BITS_CAR_POS_Z)
+            * self.POS_Z_RESOLUTION
+        )
 
         # Read vector normal to car heading
-        angle_x_deg = float(bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_X) * self.NORM_X_RESOLUTION)
+        angle_x_deg = float(
+            bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_X) * self.NORM_X_RESOLUTION
+        )
         angle_x_rad = angle_x_deg * (math.pi / 180)
         self._norm_x = math.cos(angle_x_rad)
 
-        angle_y_deg = float(bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_Y) * self.NORM_Y_RESOLUTION)
+        angle_y_deg = float(
+            bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_Y) * self.NORM_Y_RESOLUTION
+        )
         angle_y_rad = angle_y_deg * (math.pi / 180)
         self._norm_y = math.cos(angle_y_rad)
 
-        self._norm_z = math.sqrt(1 - self._norm_x * self._norm_x
-                                   - self._norm_y * self._norm_y)
+        self._norm_z = math.sqrt(
+            1 - self._norm_x * self._norm_x - self._norm_y * self._norm_y
+        )
 
         # Read car heading vector
-        heading_angle_deg = float(BitBuffer.make_bits_signed(bit_buffer.get_bits(self.BITS_HEADING), self.BITS_HEADING) * self.HEADING_RESOLUTION)
+        heading_angle_deg = float(
+            BitBuffer.make_bits_signed(
+                bit_buffer.get_bits(self.BITS_HEADING), self.BITS_HEADING
+            )
+            * self.HEADING_RESOLUTION
+        )
         heading_angle_rad = heading_angle_deg * (math.pi / 180)
         self.set_heading(heading_angle_rad)
 
@@ -62,7 +84,7 @@ class PerCarPositionData(object):
         _loc2_ = Vector3D()
         _loc2_.x = math.cos(angle)
         _loc2_.y = math.sin(angle)
-        _loc2_.z = 0.
+        _loc2_.z = 0.0
 
         _loc3_ = Vector3D()
         _loc3_.x = _loc2_.y * self._norm_z - self._norm_y * _loc2_.z

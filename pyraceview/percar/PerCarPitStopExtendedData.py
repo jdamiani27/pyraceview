@@ -14,12 +14,14 @@ class PerCarPitStopExtendedData(object):
         self._rank_in = int(byte_array.read_byte())
         self._rank_out = int(byte_array.read_byte())
 
-        FLAG_CONVERSION = {1: Flag.PRE_RACE,
-                           2: Flag.GREEN,
-                           3: Flag.YELLOW,
-                           4: Flag.RED,
-                           5: Flag.CHECKERED,
-                           6: Flag.WHITE}
+        FLAG_CONVERSION = {
+            1: Flag.PRE_RACE,
+            2: Flag.GREEN,
+            3: Flag.YELLOW,
+            4: Flag.RED,
+            5: Flag.CHECKERED,
+            6: Flag.WHITE,
+        }
 
         _loc2_ = byte_array.read_byte()
 
@@ -28,7 +30,7 @@ class PerCarPitStopExtendedData(object):
         except KeyError:
             self._flag = Flag.UNDEFINED
 
-        if (_loc2_ & self.EXPANDED_TIME_FIELDS_BITMASK):
+        if _loc2_ & self.EXPANDED_TIME_FIELDS_BITMASK:
             self._to_stop = float(byte_array.read_unsigned_int() / 10)
             self._to_left_jack_up = float(byte_array.read_unsigned_int() / 10)
             self._to_left_jack_dn = float(byte_array.read_unsigned_int() / 10)

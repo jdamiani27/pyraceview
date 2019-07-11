@@ -8,7 +8,7 @@ class MsgCarPosition(object):
     CAR_POSITION_VITC_TIME_BITS = uint32(32)
 
     def __init__(self, msg_bytes):
-        self._car_data = [] # PerCarPositionData
+        self._car_data = []  # PerCarPositionData
         self._car_reverse_lookup = {}
 
         bit_buffer = BitBuffer(ByteArray(msg_bytes))

@@ -3,7 +3,6 @@ from .Endian import Endian
 
 
 class ByteArray(object):
-
     def __init__(self, bytes):
         self._bytes = bytes
         self._position = 0
@@ -25,7 +24,7 @@ class ByteArray(object):
         return self.read(np.dtype(np.uint32).newbyteorder(self._endian.value))
 
     def read_utf_bytes(self, length):
-        return self.read(np.dtype(('S', length))).decode('utf-8')
+        return self.read(np.dtype(("S", length))).decode("utf-8")
 
     def read(self, dtype):
         val = np.frombuffer(self.buffer, dtype=dtype, count=1)[0]
@@ -35,7 +34,7 @@ class ByteArray(object):
 
     @property
     def buffer(self):
-        return self._bytes[self._position:]
+        return self._bytes[self._position :]
 
     @property
     def position(self):

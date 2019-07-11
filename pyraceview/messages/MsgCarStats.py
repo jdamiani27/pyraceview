@@ -8,7 +8,7 @@ class MsgCarStats(object):
     NUMBER_OF_CAR_BITS = uint32(8)
 
     def __init__(self, msg_bytes):
-        self._car_data = [] # PerCarStatsData
+        self._car_data = []  # PerCarStatsData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._vitc_time = int(bit_buffer.get_bits(self.CAR_POSITION_VITC_TIME_BITS))

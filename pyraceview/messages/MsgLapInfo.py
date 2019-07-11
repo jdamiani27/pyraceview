@@ -14,7 +14,7 @@ class MsgLapInfo(object):
     LAPINFO_BITS_RESERVED = uint32(3)
 
     def __init__(self, msg_bytes):
-        self._per_car_lap_data = [] # PerCarLapData
+        self._per_car_lap_data = []  # PerCarLapData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._vitc_time = int(bit_buffer.get_bits(self.LAPINFO_BITS_VITC_TIME))
@@ -23,7 +23,9 @@ class MsgLapInfo(object):
         self._lead_changes = int(bit_buffer.get_bits(self.LAPINFO_BITS_LEAD_CHANGES))
         self._num_leaders = int(bit_buffer.get_bits(self.LAPINFO_BITS_NUM_LEADERS))
         self._num_cautions = int(bit_buffer.get_bits(self.LAPINFO_BITS_NUM_CAUTIONS))
-        self._last_flag_change_lap = int(bit_buffer.get_bits(self.LAPINFO_BITS_FLAG_LAP))
+        self._last_flag_change_lap = int(
+            bit_buffer.get_bits(self.LAPINFO_BITS_FLAG_LAP)
+        )
         bit_buffer.get_bits(self.LAPINFO_BITS_RESERVED)
 
         for _ in range(self._num_cars):

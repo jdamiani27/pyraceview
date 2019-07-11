@@ -14,13 +14,19 @@ class MsgRaceStatus(object):  # extends MsgBase
     BITS_SUNSET = uint32(3)
     BITS_RESERVED = uint32(3)
 
-    PREAMBLE_SIZE_BYTES = uint32((BITS_VITC_TIME + BITS_LAP
-                                                 + BITS_FLAG
-                                                 + BITS_CAUTIONS
-                                                 + BITS_FLAG_LAP
-                                                 + BITS_CARS
-                                                 + BITS_SUNSET
-                                                 + BITS_RESERVED) // 8)
+    PREAMBLE_SIZE_BYTES = uint32(
+        (
+            BITS_VITC_TIME
+            + BITS_LAP
+            + BITS_FLAG
+            + BITS_CAUTIONS
+            + BITS_FLAG_LAP
+            + BITS_CARS
+            + BITS_SUNSET
+            + BITS_RESERVED
+        )
+        // 8
+    )
 
     def __init__(self, msg_bytes):
         self._per_car_race_status = []  # PerCarRaceStatusData
@@ -35,10 +41,14 @@ class MsgRaceStatus(object):  # extends MsgBase
         self._sun_set_value = int(bit_buffer.get_bits(self.BITS_SUNSET))
         bit_buffer.get_bits(self.BITS_RESERVED)
         msg_header = MsgHeader(msg_bytes)
-        byte_size = uint32((msg_header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars)
+        byte_size = uint32(
+            (msg_header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars
+        )
 
         for _ in range(self._number_of_cars):
-            self._per_car_race_status.append(PerCarRaceStatusData(bit_buffer, byte_size))
+            self._per_car_race_status.append(
+                PerCarRaceStatusData(bit_buffer, byte_size)
+            )
 
     @property
     def flag(self):
