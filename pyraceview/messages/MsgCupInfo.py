@@ -14,11 +14,8 @@ class MsgCupInfo(object):
         self._lap = int(bit_buffer.get_bits(self.CUP_POINTS_LAP_BITS))
         self._num_cars = int(bit_buffer.get_bits(self.CUP_POINTS_NUM_CAR_BITS))
 
-        i = 0
-
-        while i < self._num_cars:
+        for _ in range(self._num_cars):
             self._per_car_points.append(PerCarPointsData(bit_buffer))
-            i += 1
 
     @property
     def per_car_points(self):

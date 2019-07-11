@@ -15,13 +15,11 @@ class MsgCarPosition(object):
         bit_buffer.set_position(7)
         self._number_of_cars = int(bit_buffer.get_bits(self.CAR_POSITION_CAR_BITS))
         self._vitc_time = int(bit_buffer.get_bits(self.CAR_POSITION_VITC_TIME_BITS))
-        i = 0
 
-        while i < self._number_of_cars:
+        for _ in range(self._number_of_cars):
             position = PerCarPositionData(bit_buffer)
             self._car_data.append(position)
             self._car_reverse_lookup[position.car_id] = position
-            i += 1
 
     @property
     def car_data(self):

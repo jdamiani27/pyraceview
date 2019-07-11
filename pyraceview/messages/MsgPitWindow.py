@@ -8,14 +8,10 @@ class MsgPitWindow(object):
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
         self._num_cars = int(bit_buffer.get_bits(uint32(8)))
-
-        i = 0
-
         self._per_car_pit_window_data = []
 
-        while i < self._num_cars:
+        for _ in range(self._num_cars):
             self._per_car_pit_window_data.append(PerCarPitWindowData(bit_buffer))
-            i += 1
 
     @property
     def per_car_pit_window_data(self):

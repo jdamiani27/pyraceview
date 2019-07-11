@@ -37,10 +37,8 @@ class MsgRaceStatus(object):  # extends MsgBase
         msg_header = MsgHeader(msg_bytes)
         byte_size = uint32((msg_header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars)
 
-        i = 0
-        while i < self._number_of_cars:
+        for _ in range(self._number_of_cars):
             self._per_car_race_status.append(PerCarRaceStatusData(bit_buffer, byte_size))
-            i += 1
 
     @property
     def flag(self):

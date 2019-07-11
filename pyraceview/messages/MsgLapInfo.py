@@ -26,11 +26,8 @@ class MsgLapInfo(object):
         self._last_flag_change_lap = int(bit_buffer.get_bits(self.LAPINFO_BITS_FLAG_LAP))
         bit_buffer.get_bits(self.LAPINFO_BITS_RESERVED)
 
-        i = 0
-
-        while i < self._num_cars:
+        for _ in range(self._num_cars):
             self._per_car_lap_data.append(PerCarLapData(bit_buffer))
-            i += 1
 
     @property
     def lap(self):
