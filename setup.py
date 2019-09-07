@@ -7,7 +7,6 @@ URL = 'https://github.com/jdamiani27/pyraceview'
 EMAIL = 'me@jasondamiani.com'
 AUTHOR = 'Jason Damiani'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.0.1'
 
 REQUIRED = [
     'numpy'
@@ -15,7 +14,8 @@ REQUIRED = [
 
 setup(
     name=NAME,
-    version=VERSION,
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     description=DESCRIPTION,
     author=AUTHOR,
     author_email=EMAIL,
