@@ -39,18 +39,18 @@ class MsgFactory(object):
 
     def has_message(self):
         available = self._buffer.size()
-        if available >= HEADER_SIZE:
-            header = MsgHeader(self._buffer.peek(HEADER_SIZE))
-            if header.size + HEADER_SIZE <= available:
+        if available >= self.HEADER_SIZE:
+            header = MsgHeader(self._buffer.peek(self.HEADER_SIZE))
+            if header.size + self.HEADER_SIZE <= available:
                 return True
 
         return False
 
     def get_message(self):
         if self.has_message():
-            header = MsgHeader(self._buffer.peek(HEADER_SIZE))
+            header = MsgHeader(self._buffer.peek(self.HEADER_SIZE))
             message_parser = _parsers[header.byte_type]
-            msg_bytes = self.buffer.read(header.size + HEADER_SIZE)
+            msg_bytes = self.buffer.read(header.size + self.HEADER_SIZE)
             return message_parser(msg_bytes)
 
         return None
