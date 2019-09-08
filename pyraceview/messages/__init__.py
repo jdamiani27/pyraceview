@@ -50,7 +50,7 @@ class MsgFactory(object):
         if self.has_message():
             header = MsgHeader(self._buffer.peek(HEADER_SIZE))
             message_parser = _parsers[header.byte_type]
-            msg_bytes = self.buffer.read(header.size + HEADER_SIZE)
+            msg_bytes = self._buffer.read(header.size + HEADER_SIZE)
             return message_parser(msg_bytes)
 
         return None
