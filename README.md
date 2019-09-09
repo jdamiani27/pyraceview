@@ -46,7 +46,6 @@ In order to parse the entire message, we must use the header to lookup the corre
 ```python
 >>> from pyraceview.messages import _parsers
 >>> _parsers
-
 {'a': pyraceview.messages.MsgCarStats.MsgCarStats,
  'b': pyraceview.messages.MsgPitLaneExtended.MsgPitLaneExtended,
  'd': pyraceview.messages.MsgPitLaneExtended.MsgPitLaneExtended,
@@ -58,11 +57,9 @@ In order to parse the entire message, we must use the header to lookup the corre
  's': pyraceview.messages.MsgRaceStatus.MsgRaceStatus,
  'V': pyraceview.messages.MsgVitcToLap.MsgVitcToLap,
  'W': pyraceview.messages.MsgCarPosition.MsgCarPosition}
-
 >>> parser = _parsers[hdr.byte_type]
 >>> msg = parser(msg_raw)
 >>> msg
-
 <pyraceview.messages.MsgCarPosition.MsgCarPosition at 0x117763550>
 ```
 
