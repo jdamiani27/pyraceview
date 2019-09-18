@@ -29,55 +29,23 @@ class MsgRaceStatus(object):  # extends MsgBase
     )
 
     def __init__(self, msg_bytes):
-        self._per_car_race_status = []  # PerCarRaceStatusData
+        self.per_car_race_status = []  # PerCarRaceStatusData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self._vitc_time = int(bit_buffer.get_bits(self.BITS_VITC_TIME))
-        self._lap = int(bit_buffer.get_bits(self.BITS_LAP))
-        self._flag = int(bit_buffer.get_bits(self.BITS_FLAG))
-        self._number_cautions = int(bit_buffer.get_bits(self.BITS_CAUTIONS))
-        self._last_flag_change_lap = int(bit_buffer.get_bits(self.BITS_FLAG_LAP))
-        self._number_of_cars = int(bit_buffer.get_bits(self.BITS_CARS))
-        self._sun_set_value = int(bit_buffer.get_bits(self.BITS_SUNSET))
+        self.vitc_time = int(bit_buffer.get_bits(self.BITS_VITC_TIME))
+        self.lap = int(bit_buffer.get_bits(self.BITS_LAP))
+        self.flag = int(bit_buffer.get_bits(self.BITS_FLAG))
+        self.number_cautions = int(bit_buffer.get_bits(self.BITS_CAUTIONS))
+        self.last_flag_change_lap = int(bit_buffer.get_bits(self.BITS_FLAG_LAP))
+        self.number_of_cars = int(bit_buffer.get_bits(self.BITS_CARS))
+        self.sun_set_value = int(bit_buffer.get_bits(self.BITS_SUNSET))
         bit_buffer.get_bits(self.BITS_RESERVED)
         msg_header = MsgHeader(msg_bytes)
         byte_size = uint32(
-            (msg_header.size - self.PREAMBLE_SIZE_BYTES) // self._number_of_cars
+            (msg_header.size - self.PREAMBLE_SIZE_BYTES) // self.number_of_cars
         )
 
-        for _ in range(self._number_of_cars):
-            self._per_car_race_status.append(
+        for _ in range(self.number_of_cars):
+            self.per_car_race_status.append(
                 PerCarRaceStatusData(bit_buffer, byte_size)
             )
-
-    @property
-    def flag(self):
-        return self._flag
-
-    @property
-    def last_flag_change_lap(self):
-        return self._last_flag_change_lap
-
-    @property
-    def number_cautions(self):
-        return self._number_cautions
-
-    @property
-    def vitc_time(self):
-        return self._vitc_time
-
-    @property
-    def lap(self):
-        return self._lap
-
-    @property
-    def per_car_race_status(self):
-        return self._per_car_race_status
-
-    @property
-    def number_of_cars(self):
-        return self._number_of_cars
-
-    @property
-    def sun_set_value(self):
-        return self._sun_set_value

@@ -32,21 +32,21 @@ class PerCarPositionData(object):
     HEADING_RESOLUTION = float64(180 / 2 ** (BITS_HEADING - uint32(1)))
 
     def __init__(self, bit_buffer):
-        self._car_id = int(bit_buffer.get_bits(self.BITS_CAR_NUM))
+        self.car_id = int(bit_buffer.get_bits(self.BITS_CAR_NUM))
 
         # Read the car position
         pos_x_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_X))
         pos_y_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_Y))
         pos_z_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_Z))
-        self._pos_x = float(
+        self.pos_x = float(
             BitBuffer.make_bits_signed(pos_x_unsign, self.BITS_CAR_POS_X)
             * self.POS_X_RESOLUTION
         )
-        self._pos_y = float(
+        self.pos_y = float(
             BitBuffer.make_bits_signed(pos_y_unsign, self.BITS_CAR_POS_Y)
             * self.POS_Y_RESOLUTION
         )
-        self._pos_z = float(
+        self.pos_z = float(
             BitBuffer.make_bits_signed(pos_z_unsign, self.BITS_CAR_POS_Z)
             * self.POS_Z_RESOLUTION
         )
@@ -56,16 +56,16 @@ class PerCarPositionData(object):
             bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_X) * self.NORM_X_RESOLUTION
         )
         angle_x_rad = angle_x_deg * (math.pi / 180)
-        self._norm_x = math.cos(angle_x_rad)
+        self.norm_x = math.cos(angle_x_rad)
 
         angle_y_deg = float(
             bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_Y) * self.NORM_Y_RESOLUTION
         )
         angle_y_rad = angle_y_deg * (math.pi / 180)
-        self._norm_y = math.cos(angle_y_rad)
+        self.norm_y = math.cos(angle_y_rad)
 
-        self._norm_z = math.sqrt(
-            1 - self._norm_x * self._norm_x - self._norm_y * self._norm_y
+        self.norm_z = math.sqrt(
+            1 - self.norm_x * self.norm_x - self.norm_y * self.norm_y
         )
 
         # Read car heading vector
@@ -87,44 +87,16 @@ class PerCarPositionData(object):
         _loc2_.z = 0.0
 
         _loc3_ = Vector3D()
-        _loc3_.x = _loc2_.y * self._norm_z - self._norm_y * _loc2_.z
-        _loc3_.y = _loc2_.z * self._norm_x - self._norm_z * _loc2_.x
-        _loc3_.z = _loc2_.x * self._norm_y - self._norm_x * _loc2_.y
+        _loc3_.x = _loc2_.y * self.norm_z - self.norm_y * _loc2_.z
+        _loc3_.y = _loc2_.z * self.norm_x - self.norm_z * _loc2_.x
+        _loc3_.z = _loc2_.x * self.norm_y - self.norm_x * _loc2_.y
         _loc3_.normalize()
 
         self._heading = Vector3D()
-        self._heading.x = self._norm_y * _loc3_.z - _loc3_.y * self._norm_z
-        self._heading.y = self._norm_z * _loc3_.x - _loc3_.z * self._norm_x
-        self._heading.z = self._norm_x * _loc3_.y - _loc3_.x * self._norm_y
+        self._heading.x = self.norm_y * _loc3_.z - _loc3_.y * self.norm_z
+        self._heading.y = self.norm_z * _loc3_.x - _loc3_.z * self.norm_x
+        self._heading.z = self.norm_x * _loc3_.y - _loc3_.x * self.norm_y
         self._heading.normalize()
-
-    @property
-    def car_id(self):
-        return self._car_id
-
-    @property
-    def pos_x(self):
-        return self._pos_x
-
-    @property
-    def pos_y(self):
-        return self._pos_y
-
-    @property
-    def pos_z(self):
-        return self._pos_z
-
-    @property
-    def norm_x(self):
-        return self._norm_x
-
-    @property
-    def norm_y(self):
-        return self._norm_y
-
-    @property
-    def norm_z(self):
-        return self._norm_z
 
     @property
     def heading_x(self):

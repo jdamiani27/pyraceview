@@ -9,10 +9,10 @@ class PerCarPitStopExtendedData(object):
     FLAG_BITMASK = uint32(15)
 
     def __init__(self, byte_array):
-        self._race_lap = int(byte_array.read_short())
-        self._lap = int(byte_array.read_short())
-        self._rank_in = int(byte_array.read_byte())
-        self._rank_out = int(byte_array.read_byte())
+        self.race_lap = int(byte_array.read_short())
+        self.lap = int(byte_array.read_short())
+        self.rank_in = int(byte_array.read_byte())
+        self.rank_out = int(byte_array.read_byte())
 
         FLAG_CONVERSION = {
             1: Flag.PRE_RACE,
@@ -26,95 +26,35 @@ class PerCarPitStopExtendedData(object):
         _loc2_ = byte_array.read_byte()
 
         try:
-            self._flag = FLAG_CONVERSION[_loc2_ & self.FLAG_BITMASK]
+            self.flag = FLAG_CONVERSION[_loc2_ & self.FLAG_BITMASK]
         except KeyError:
-            self._flag = Flag.UNDEFINED
+            self.flag = Flag.UNDEFINED
 
         if _loc2_ & self.EXPANDED_TIME_FIELDS_BITMASK:
-            self._to_stop = float(byte_array.read_unsigned_int() / 10)
-            self._to_left_jack_up = float(byte_array.read_unsigned_int() / 10)
-            self._to_left_jack_dn = float(byte_array.read_unsigned_int() / 10)
-            self._to_right_jack_up = float(byte_array.read_unsigned_int() / 10)
-            self._to_right_jack_dn = float(byte_array.read_unsigned_int() / 10)
-            self._to_restart = float(byte_array.read_unsigned_int() / 10)
-            self._to_exit = float(byte_array.read_unsigned_int() / 10)
+            self.to_stop = float(byte_array.read_unsigned_int() / 10)
+            self.to_left_jack_up = float(byte_array.read_unsigned_int() / 10)
+            self.to_left_jack_dn = float(byte_array.read_unsigned_int() / 10)
+            self.to_right_jack_up = float(byte_array.read_unsigned_int() / 10)
+            self.to_right_jack_dn = float(byte_array.read_unsigned_int() / 10)
+            self.to_restart = float(byte_array.read_unsigned_int() / 10)
+            self.to_exit = float(byte_array.read_unsigned_int() / 10)
         else:
-            self._to_stop = float(byte_array.read_unsigned_short() / 10)
-            self._to_left_jack_up = float(byte_array.read_unsigned_short() / 10)
-            self._to_left_jack_dn = float(byte_array.read_unsigned_short() / 10)
-            self._to_right_jack_up = float(byte_array.read_unsigned_short() / 10)
-            self._to_right_jack_dn = float(byte_array.read_unsigned_short() / 10)
-            self._to_restart = float(byte_array.read_unsigned_short() / 10)
-            self._to_exit = float(byte_array.read_unsigned_short() / 10)
+            self.to_stop = float(byte_array.read_unsigned_short() / 10)
+            self.to_left_jack_up = float(byte_array.read_unsigned_short() / 10)
+            self.to_left_jack_dn = float(byte_array.read_unsigned_short() / 10)
+            self.to_right_jack_up = float(byte_array.read_unsigned_short() / 10)
+            self.to_right_jack_dn = float(byte_array.read_unsigned_short() / 10)
+            self.to_restart = float(byte_array.read_unsigned_short() / 10)
+            self.to_exit = float(byte_array.read_unsigned_short() / 10)
 
-        self._tires = int(byte_array.read_byte())
-        self._flags = int(byte_array.read_byte())
-        self._pit_group = int(byte_array.read_byte())
-
-    @property
-    def race_lap(self):
-        return self._race_lap
-
-    @property
-    def lap(self):
-        return self._lap
-
-    @property
-    def flag(self):
-        return self._flag
-
-    @property
-    def flags(self):
-        return self._flags
-
-    @property
-    def rank_in(self):
-        return self._rank_in
-
-    @property
-    def rank_out(self):
-        return self._rank_out
-
-    @property
-    def to_stop(self):
-        return self._to_stop
-
-    @property
-    def to_left_jack_up(self):
-        return self._to_left_jack_up
-
-    @property
-    def to_left_jack_dn(self):
-        return self._to_left_jack_dn
-
-    @property
-    def to_right_jack_up(self):
-        return self._to_right_jack_up
-
-    @property
-    def to_right_jack_dn(self):
-        return self._to_right_jack_dn
-
-    @property
-    def to_restart(self):
-        return self._to_restart
-
-    @property
-    def to_exit(self):
-        return self._to_exit
-
-    @property
-    def tires(self):
-        return self._tires
-
-    @property
-    def pit_group(self):
-        return self._pit_group
+        self.tires = int(byte_array.read_byte())
+        self.flags = int(byte_array.read_byte())
+        self.pit_group = int(byte_array.read_byte())
 
     @property
     def tires_is_estimate(self):
-        return (self._flags & self.BITMASK_TIRES_IS_ESTIMATE) != 0
+        return (self.flags & self.BITMASK_TIRES_IS_ESTIMATE) != 0
 
     @property
     def abnormal_stop(self):
-        return (self._flags & self.BITMASK_ABNORMAL_PIT) != 0
+        return (self.flags & self.BITMASK_ABNORMAL_PIT) != 0
