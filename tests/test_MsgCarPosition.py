@@ -23,9 +23,9 @@ def msg_car_position():
     return MsgCarPosition(raw)
 
 
-def test_vitc_time(msg_car_position):
-    vitc_time = msg_car_position.vitc_time
-    assert vitc_time == 54001272
+def test_timecode(msg_car_position):
+    timecode = msg_car_position.timecode
+    assert timecode == 54001272
 
 
 def test_number_of_cars(msg_car_position):
