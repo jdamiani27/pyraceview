@@ -2,8 +2,8 @@ from ..models import Flag
 from numpy import uint32
 
 
-BITMASK_TIRES_IS_ESTIMATE = 1
-BITMASK_ABNORMAL_PIT = 2
+TIRES_IS_ESTIMATE_BITMASK = 1
+ABNORMAL_PIT_BITMASK = 2
 EXPANDED_TIME_FIELDS_BITMASK = uint32(128)
 FLAG_BITMASK = uint32(15)
 
@@ -24,14 +24,14 @@ class PerCarPitStopExtendedData(object):
         self.rank_in = int(byte_array.read_byte())
         self.rank_out = int(byte_array.read_byte())
 
-        _loc2_ = byte_array.read_byte()
+        _flag = byte_array.read_byte()
 
         try:
-            self.flag = FLAG_CONVERSION[_loc2_ & FLAG_BITMASK]
+            self.flag = FLAG_CONVERSION[_flag & FLAG_BITMASK]
         except KeyError:
             self.flag = Flag.UNDEFINED
 
-        if _loc2_ & EXPANDED_TIME_FIELDS_BITMASK:
+        if _flag & EXPANDED_TIME_FIELDS_BITMASK:
             self.to_stop = float(byte_array.read_unsigned_int() / 10)
             self.to_left_jack_up = float(byte_array.read_unsigned_int() / 10)
             self.to_left_jack_dn = float(byte_array.read_unsigned_int() / 10)
@@ -54,8 +54,8 @@ class PerCarPitStopExtendedData(object):
 
     @property
     def tires_is_estimate(self):
-        return (self.flags & BITMASK_TIRES_IS_ESTIMATE) != 0
+        return (self.flags & TIRES_IS_ESTIMATE_BITMASK) != 0
 
     @property
     def abnormal_stop(self):
-        return (self.flags & BITMASK_ABNORMAL_PIT) != 0
+        return (self.flags & ABNORMAL_PIT_BITMASK) != 0

@@ -4,47 +4,52 @@ from ..percar import PerCarRaceStatusData
 from ..messages import MsgHeader
 
 
-BITS_VITC_TIME = uint32(32)
-BITS_LAP = uint32(10)
-BITS_FLAG = uint32(3)
-BITS_CAUTIONS = uint32(5)
-BITS_FLAG_LAP = uint32(10)
-BITS_CARS = uint32(6)
-BITS_SUNSET = uint32(3)
-BITS_RESERVED = uint32(3)
+TIMECODE_BITS = uint32(32)
+LAP_BITS = uint32(10)
+FLAG_BITS = uint32(3)
+NUMBER_OF_CAUTIONS_BITS = uint32(5)
+FLAG_LAP_BITS = uint32(10)
+NUMBER_OF_CAR_BITS = uint32(6)
+SUNSET_BITS = uint32(3)
+RESERVED_BITS = uint32(3)
 
 PREAMBLE_SIZE_BYTES = uint32(
     (
-        BITS_VITC_TIME
-        + BITS_LAP
-        + BITS_FLAG
-        + BITS_CAUTIONS
-        + BITS_FLAG_LAP
-        + BITS_CARS
-        + BITS_SUNSET
-        + BITS_RESERVED
+        TIMECODE_BITS
+        + LAP_BITS
+        + FLAG_BITS
+        + NUMBER_OF_CAUTIONS_BITS
+        + FLAG_LAP_BITS
+        + NUMBER_OF_CAR_BITS
+        + SUNSET_BITS
+        + RESERVED_BITS
     )
     // 8
 )
 
 
-class MsgRaceStatus(object):  # extends MsgBase
+class MsgRaceStatus(object):
     def __init__(self, msg_bytes):
-        self.per_car_race_status = []  # PerCarRaceStatusData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self.vitc_time = int(bit_buffer.get_bits(BITS_VITC_TIME))
-        self.lap = int(bit_buffer.get_bits(BITS_LAP))
-        self.flag = int(bit_buffer.get_bits(BITS_FLAG))
-        self.number_cautions = int(bit_buffer.get_bits(BITS_CAUTIONS))
-        self.last_flag_change_lap = int(bit_buffer.get_bits(BITS_FLAG_LAP))
-        self.number_of_cars = int(bit_buffer.get_bits(BITS_CARS))
-        self.sun_set_value = int(bit_buffer.get_bits(BITS_SUNSET))
-        bit_buffer.get_bits(BITS_RESERVED)
+
+        self.timecode = int(bit_buffer.get_bits(TIMECODE_BITS))
+        self.lap = int(bit_buffer.get_bits(LAP_BITS))
+        self.flag = int(bit_buffer.get_bits(FLAG_BITS))
+        self.number_of_cautions = int(bit_buffer.get_bits(NUMBER_OF_CAUTIONS_BITS))
+        self.last_flag_change_lap = int(bit_buffer.get_bits(FLAG_LAP_BITS))
+        self.number_of_cars = int(bit_buffer.get_bits(NUMBER_OF_CAR_BITS))
+        self.sunset = int(bit_buffer.get_bits(SUNSET_BITS))
+
+        bit_buffer.get_bits(RESERVED_BITS)
+
         msg_header = MsgHeader(msg_bytes)
         byte_size = uint32(
             (msg_header.size - PREAMBLE_SIZE_BYTES) // self.number_of_cars
         )
 
+        self.car_data = {}
+
         for _ in range(self.number_of_cars):
-            self.per_car_race_status.append(PerCarRaceStatusData(bit_buffer, byte_size))
+            race_status_data = PerCarRaceStatusData(bit_buffer, byte_size)
+            self.car_data[race_status_data.car_id] = race_status_data
