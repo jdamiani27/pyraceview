@@ -20,7 +20,7 @@ raw = (
 
 @pytest.fixture
 def car():
-    return MsgCarPosition(raw).car_data[176]
+    return MsgCarPosition(raw).car_data[-1]
 
 
 def test_car_id(car):
