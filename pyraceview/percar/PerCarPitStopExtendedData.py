@@ -2,19 +2,12 @@ from ..models import Flag
 from numpy import uint32
 
 
-class PerCarPitStopExtendedData(object):
-    BITMASK_TIRES_IS_ESTIMATE = 1
-    BITMASK_ABNORMAL_PIT = 2
-    EXPANDED_TIME_FIELDS_BITMASK = uint32(128)
-    FLAG_BITMASK = uint32(15)
+BITMASK_TIRES_IS_ESTIMATE = 1
+BITMASK_ABNORMAL_PIT = 2
+EXPANDED_TIME_FIELDS_BITMASK = uint32(128)
+FLAG_BITMASK = uint32(15)
 
-    def __init__(self, byte_array):
-        self._race_lap = int(byte_array.read_short())
-        self._lap = int(byte_array.read_short())
-        self._rank_in = int(byte_array.read_byte())
-        self._rank_out = int(byte_array.read_byte())
-
-        FLAG_CONVERSION = {
+FLAG_CONVERSION = {
             1: Flag.PRE_RACE,
             2: Flag.GREEN,
             3: Flag.YELLOW,
@@ -23,14 +16,22 @@ class PerCarPitStopExtendedData(object):
             6: Flag.WHITE,
         }
 
+
+class PerCarPitStopExtendedData(object):
+    def __init__(self, byte_array):
+        self._race_lap = int(byte_array.read_short())
+        self._lap = int(byte_array.read_short())
+        self._rank_in = int(byte_array.read_byte())
+        self._rank_out = int(byte_array.read_byte())
+
         _loc2_ = byte_array.read_byte()
 
         try:
-            self._flag = FLAG_CONVERSION[_loc2_ & self.FLAG_BITMASK]
+            self._flag = FLAG_CONVERSION[_loc2_ & FLAG_BITMASK]
         except KeyError:
             self._flag = Flag.UNDEFINED
 
-        if _loc2_ & self.EXPANDED_TIME_FIELDS_BITMASK:
+        if _loc2_ & EXPANDED_TIME_FIELDS_BITMASK:
             self._to_stop = float(byte_array.read_unsigned_int() / 10)
             self._to_left_jack_up = float(byte_array.read_unsigned_int() / 10)
             self._to_left_jack_dn = float(byte_array.read_unsigned_int() / 10)
@@ -113,8 +114,8 @@ class PerCarPitStopExtendedData(object):
 
     @property
     def tires_is_estimate(self):
-        return (self._flags & self.BITMASK_TIRES_IS_ESTIMATE) != 0
+        return (self._flags & BITMASK_TIRES_IS_ESTIMATE) != 0
 
     @property
     def abnormal_stop(self):
-        return (self._flags & self.BITMASK_ABNORMAL_PIT) != 0
+        return (self._flags & BITMASK_ABNORMAL_PIT) != 0
