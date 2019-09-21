@@ -11,18 +11,30 @@ class MsgPitLaneExtended(object):
         byte_array.endian = (
             Endian.LITTLE_ENDIAN if (endian == Endian.BIG_ENDIAN) else Endian.BIG_ENDIAN
         )
-        self.timecode = int(byte_array.read_unsigned_int())
-        number_of_cars = int(byte_array.read_unsigned_byte())
+        self._vitc_time = int(byte_array.read_unsigned_int())
+        num_cars = int(byte_array.read_unsigned_byte())
 
-        if number_of_cars > 1:
-            raise ValueError(f"Expected 1 car entry, received {number_of_cars}")
+        if num_cars > 1:
+            raise ValueError(f"Expected 1 car entry, received {num_cars}")
 
-        self.car_id = int(byte_array.read_unsigned_byte())
-        number_of_pits = int(byte_array.read_byte())
+        self._car_id = int(byte_array.read_unsigned_byte())
+        num_pits = int(byte_array.read_byte())
 
-        if number_of_pits > 1:
-            raise ValueError(f"Expected 1 pit entry, received {number_of_pits}")
+        if num_pits > 1:
+            raise ValueError(f"Expected 1 pit entry, received {num_pits}")
 
-        self.pit_stop = PerCarPitStopExtendedData(byte_array)
+        self._pit_stop = PerCarPitStopExtendedData(byte_array)
 
         byte_array.endian = endian
+
+    @property
+    def vitc_time(self):
+        return self._vitc_time
+
+    @property
+    def car_id(self):
+        return self._car_id
+
+    @property
+    def pit_stop(self):
+        return self._pit_stop

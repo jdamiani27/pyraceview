@@ -3,33 +3,58 @@ from ..util import BitBuffer, ByteArray
 from ..percar import PerCarLapData
 
 
-TIMECODE_BITS = uint32(32)
-LAP_BITS = uint32(10)
-NUMBER_OF_CAR_BITS = uint32(6)
-LEAD_CHANGES_BITS = uint32(8)
-NUMBER_OF_LEADERS_BITS = uint32(6)
-NUMBER_OF_CAUTIONS_BITS = uint32(5)
-FLAP_LAP_BITS = uint32(10)
-RESERVED_BITS = uint32(3)
-
-
 class MsgLapInfo(object):
+    LAPINFO_BITS_VITC_TIME = uint32(32)
+    LAPINFO_BITS_LAP = uint32(10)
+    LAPINFO_BITS_NUM_CARS = uint32(6)
+    LAPINFO_BITS_LEAD_CHANGES = uint32(8)
+    LAPINFO_BITS_NUM_LEADERS = uint32(6)
+    LAPINFO_BITS_NUM_CAUTIONS = uint32(5)
+    LAPINFO_BITS_FLAG_LAP = uint32(10)
+    LAPINFO_BITS_RESERVED = uint32(3)
+
     def __init__(self, msg_bytes):
+        self._per_car_lap_data = []  # PerCarLapData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
+        self._vitc_time = int(bit_buffer.get_bits(self.LAPINFO_BITS_VITC_TIME))
+        self._lap = int(bit_buffer.get_bits(self.LAPINFO_BITS_LAP))
+        self._num_cars = int(bit_buffer.get_bits(self.LAPINFO_BITS_NUM_CARS))
+        self._lead_changes = int(bit_buffer.get_bits(self.LAPINFO_BITS_LEAD_CHANGES))
+        self._num_leaders = int(bit_buffer.get_bits(self.LAPINFO_BITS_NUM_LEADERS))
+        self._num_cautions = int(bit_buffer.get_bits(self.LAPINFO_BITS_NUM_CAUTIONS))
+        self._last_flag_change_lap = int(
+            bit_buffer.get_bits(self.LAPINFO_BITS_FLAG_LAP)
+        )
+        bit_buffer.get_bits(self.LAPINFO_BITS_RESERVED)
 
-        self.timecode = int(bit_buffer.get_bits(TIMECODE_BITS))
-        self.lap = int(bit_buffer.get_bits(LAP_BITS))
-        self.number_of_cars = int(bit_buffer.get_bits(NUMBER_OF_CAR_BITS))
-        self.lead_changes = int(bit_buffer.get_bits(LEAD_CHANGES_BITS))
-        self.number_of_leaders = int(bit_buffer.get_bits(NUMBER_OF_LEADERS_BITS))
-        self.number_of_cautions = int(bit_buffer.get_bits(NUMBER_OF_CAUTIONS_BITS))
-        self.last_flag_change_lap = int(bit_buffer.get_bits(FLAP_LAP_BITS))
+        for _ in range(self._num_cars):
+            self._per_car_lap_data.append(PerCarLapData(bit_buffer))
 
-        bit_buffer.get_bits(RESERVED_BITS)
+    @property
+    def lap(self):
+        return self._lap
 
-        self.car_data = {}
+    @property
+    def per_car_lap_data(self):
+        return self._per_car_lap_data
 
-        for _ in range(self.number_of_cars):
-            lap_data = PerCarLapData(bit_buffer)
-            self.car_data[lap_data.car_id] = lap_data
+    @property
+    def num_cautions(self):
+        return self._num_cautions
+
+    @property
+    def last_flag_change_lap(self):
+        return self._last_flag_change_lap
+
+    @property
+    def num_leaders(self):
+        return self._num_leaders
+
+    @property
+    def lead_changes(self):
+        return self._lead_changes
+
+    @property
+    def vitc_time(self):
+        return self._vitc_time
