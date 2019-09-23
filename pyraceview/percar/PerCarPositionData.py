@@ -3,63 +3,64 @@ from numpy import uint32, float64, pi
 from ..util import BitBuffer, Vector3D
 
 
+CAR_ID_BITS = uint32(8)
+CAR_POS_X_BITS = uint32(18)
+CAR_POS_Y_BITS = uint32(18)
+CAR_POS_Z_BITS = uint32(15)
+ANGLE_ENCODED_NORM_X_BITS = uint32(12)
+ANGLE_ENCODED_NORM_Y_BITS = uint32(12)
+HEADING_BITS = uint32(12)
+RESERVED_BITS = uint32(1)
+CAR_SIZE_BITS = uint32(
+    CAR_ID_BITS
+    + CAR_POS_X_BITS
+    + CAR_POS_Y_BITS
+    + CAR_POS_Z_BITS
+    + ANGLE_ENCODED_NORM_X_BITS
+    + ANGLE_ENCODED_NORM_Y_BITS
+    + HEADING_BITS
+    + RESERVED_BITS
+)
+
+POS_X_RESOLUTION = float64(0.1)
+POS_Y_RESOLUTION = float64(0.1)
+POS_Z_RESOLUTION = float64(0.05)
+NORM_X_RESOLUTION = float64(180 / 2 ** ANGLE_ENCODED_NORM_X_BITS)
+NORM_Y_RESOLUTION = float64(180 / 2 ** ANGLE_ENCODED_NORM_Y_BITS)
+HEADING_RESOLUTION = float64(180 / 2 ** (HEADING_BITS - uint32(1)))
+
+
 class PerCarPositionData(object):
-
-    BITS_CAR_NUM = uint32(8)
-    BITS_CAR_POS_X = uint32(18)
-    BITS_CAR_POS_Y = uint32(18)
-    BITS_CAR_POS_Z = uint32(15)
-    BITS_ANGLE_ENCODED_NORM_X = uint32(12)
-    BITS_ANGLE_ENCODED_NORM_Y = uint32(12)
-    BITS_HEADING = uint32(12)
-    RESERVED_BITS = uint32(1)
-    CAR_SIZE = uint32(
-        BITS_CAR_NUM
-        + BITS_CAR_POS_X
-        + BITS_CAR_POS_Y
-        + BITS_CAR_POS_Z
-        + BITS_ANGLE_ENCODED_NORM_X
-        + BITS_ANGLE_ENCODED_NORM_Y
-        + BITS_HEADING
-        + RESERVED_BITS
-    )
-
-    POS_X_RESOLUTION = float64(0.1)
-    POS_Y_RESOLUTION = float64(0.1)
-    POS_Z_RESOLUTION = float64(0.05)
-    NORM_X_RESOLUTION = float64(180 / 2 ** BITS_ANGLE_ENCODED_NORM_X)
-    NORM_Y_RESOLUTION = float64(180 / 2 ** BITS_ANGLE_ENCODED_NORM_Y)
-    HEADING_RESOLUTION = float64(180 / 2 ** (BITS_HEADING - uint32(1)))
-
     def __init__(self, bit_buffer):
-        self._car_id = int(bit_buffer.get_bits(self.BITS_CAR_NUM))
+        self._car_id = int(bit_buffer.get_bits(CAR_ID_BITS))
 
         # Read the car position
-        pos_x_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_X))
-        pos_y_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_Y))
-        pos_z_unsign = uint32(bit_buffer.get_bits(self.BITS_CAR_POS_Z))
+        pos_x_unsign = uint32(bit_buffer.get_bits(CAR_POS_X_BITS))
+        pos_y_unsign = uint32(bit_buffer.get_bits(CAR_POS_Y_BITS))
+        pos_z_unsign = uint32(bit_buffer.get_bits(CAR_POS_Z_BITS))
+        
         self._pos_x = float(
-            BitBuffer.make_bits_signed(pos_x_unsign, self.BITS_CAR_POS_X)
-            * self.POS_X_RESOLUTION
+            BitBuffer.make_bits_signed(pos_x_unsign, CAR_POS_X_BITS)
+            * POS_X_RESOLUTION
         )
         self._pos_y = float(
-            BitBuffer.make_bits_signed(pos_y_unsign, self.BITS_CAR_POS_Y)
-            * self.POS_Y_RESOLUTION
+            BitBuffer.make_bits_signed(pos_y_unsign, CAR_POS_Y_BITS)
+            * POS_Y_RESOLUTION
         )
         self._pos_z = float(
-            BitBuffer.make_bits_signed(pos_z_unsign, self.BITS_CAR_POS_Z)
-            * self.POS_Z_RESOLUTION
+            BitBuffer.make_bits_signed(pos_z_unsign, CAR_POS_Z_BITS)
+            * POS_Z_RESOLUTION
         )
 
         # Read vector normal to car heading
         angle_x_deg = float(
-            bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_X) * self.NORM_X_RESOLUTION
+            bit_buffer.get_bits(ANGLE_ENCODED_NORM_X_BITS) * NORM_X_RESOLUTION
         )
         angle_x_rad = angle_x_deg * (math.pi / 180)
         self._norm_x = math.cos(angle_x_rad)
 
         angle_y_deg = float(
-            bit_buffer.get_bits(self.BITS_ANGLE_ENCODED_NORM_Y) * self.NORM_Y_RESOLUTION
+            bit_buffer.get_bits(ANGLE_ENCODED_NORM_Y_BITS) * NORM_Y_RESOLUTION
         )
         angle_y_rad = angle_y_deg * (math.pi / 180)
         self._norm_y = math.cos(angle_y_rad)
@@ -71,14 +72,14 @@ class PerCarPositionData(object):
         # Read car heading vector
         heading_angle_deg = float(
             BitBuffer.make_bits_signed(
-                bit_buffer.get_bits(self.BITS_HEADING), self.BITS_HEADING
+                bit_buffer.get_bits(HEADING_BITS), HEADING_BITS
             )
-            * self.HEADING_RESOLUTION
+            * HEADING_RESOLUTION
         )
         heading_angle_rad = heading_angle_deg * (math.pi / 180)
         self.set_heading(heading_angle_rad)
 
-        bit_buffer.get_bits(self.RESERVED_BITS)
+        bit_buffer.get_bits(RESERVED_BITS)
 
     def set_heading(self, angle):
         _loc2_ = Vector3D()

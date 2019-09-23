@@ -11,7 +11,7 @@ class MsgPitLaneExtended(object):
         byte_array.endian = (
             Endian.LITTLE_ENDIAN if (endian == Endian.BIG_ENDIAN) else Endian.BIG_ENDIAN
         )
-        self._vitc_time = int(byte_array.read_unsigned_int())
+        self._timecode = int(byte_array.read_unsigned_int())
         num_cars = int(byte_array.read_unsigned_byte())
 
         if num_cars > 1:
@@ -28,8 +28,8 @@ class MsgPitLaneExtended(object):
         byte_array.endian = endian
 
     @property
-    def vitc_time(self):
-        return self._vitc_time
+    def timecode(self):
+        return self._timecode
 
     @property
     def car_id(self):
