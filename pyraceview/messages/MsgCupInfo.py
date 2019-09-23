@@ -3,25 +3,31 @@ from ..util import BitBuffer, ByteArray
 from ..percar import PerCarPointsData
 
 
-CUP_POINTS_LAP_BITS = uint32(10)
-CUP_POINTS_NUM_CAR_BITS = uint32(6)
+LAP_BITS = uint32(10)
+NUM_CARS_BITS = uint32(6)
 
 
 class MsgCupInfo(object):
     def __init__(self, msg_bytes):
-        self._per_car_points = []  # PerCarPointsData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self._lap = int(bit_buffer.get_bits(CUP_POINTS_LAP_BITS))
-        self._num_cars = int(bit_buffer.get_bits(CUP_POINTS_NUM_CAR_BITS))
+
+        self._lap = int(bit_buffer.get_bits(LAP_BITS))
+        self._num_cars = int(bit_buffer.get_bits(NUM_CARS_BITS))
+
+        self._car_data = []
 
         for _ in range(self._num_cars):
-            self._per_car_points.append(PerCarPointsData(bit_buffer))
+            self._car_data.append(PerCarPointsData(bit_buffer))
 
     @property
-    def per_car_points(self):
-        return self._per_car_points
+    def car_data(self):
+        return self._car_data
 
     @property
     def lap(self):
         return self._lap
+
+    @property
+    def num_cars(self):
+        return self._num_cars

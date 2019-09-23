@@ -3,19 +3,21 @@ from ..util import BitBuffer, ByteArray
 from ..percar import PerCarStatsData
 
 
-CAR_POSITION_VITC_TIME_BITS = uint32(32)
-NUMBER_OF_CAR_BITS = uint32(8)
+TIMECODE_BITS = uint32(32)
+NUM_CARS_BITS = uint32(8)
 
 
 class MsgCarStats(object):
     def __init__(self, msg_bytes):
-        self._car_data = []  # PerCarStatsData
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
-        self._vitc_time = int(bit_buffer.get_bits(CAR_POSITION_VITC_TIME_BITS))
-        self._number_of_cars = int(bit_buffer.get_bits(NUMBER_OF_CAR_BITS))
 
-        for _ in range(self._number_of_cars):
+        self._timecode = int(bit_buffer.get_bits(TIMECODE_BITS))
+        self._num_cars = int(bit_buffer.get_bits(NUM_CARS_BITS))
+
+        self._car_data = []
+
+        for _ in range(self._num_cars):
             self._car_data.append(PerCarStatsData(bit_buffer))
 
     @property
@@ -23,5 +25,9 @@ class MsgCarStats(object):
         return self._car_data
 
     @property
-    def vitc_time(self):
-        return self._vitc_time
+    def timecode(self):
+        return self._timecode
+
+    @property
+    def num_cars(self):
+        return self._num_cars

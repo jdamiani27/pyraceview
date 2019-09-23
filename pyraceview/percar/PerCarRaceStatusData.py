@@ -2,43 +2,43 @@ from numpy import uint32, float64
 from ..models import CarStats
 
 
-BITS_CAR_NUMBER = uint32(8)
-BITS_STATUS = uint32(3)
-BITS_TOL_TYPE = uint32(1)
-BITS_TOL = uint32(19)
-BITS_EVENT = uint32(4)
-BITS_SPEED = uint32(8)
-BITS_THROTTLE = uint32(7)
-BITS_BRAKE = uint32(7)
-BITS_RPM = uint32(12)
-BITS_RESERVED_VERSION1 = uint32(3)
+CAR_ID_BITS = uint32(8)
+STATUS_BITS = uint32(3)
+TOL_TYPE_BITS = uint32(1)
+TOL_BITS = uint32(19)
+EVENT_BITS = uint32(4)
+SPEED_BITS = uint32(8)
+THROTTLE_BITS = uint32(7)
+BRAKE_BITS = uint32(7)
+RPM_BITS = uint32(12)
+VERSION1_RESERVED_BITS = uint32(3)
 TOTAL_BITS_COMMON = uint32(
-    BITS_CAR_NUMBER
-    + BITS_STATUS
-    + BITS_TOL_TYPE
-    + BITS_TOL
-    + BITS_EVENT
-    + BITS_SPEED
-    + BITS_THROTTLE
-    + BITS_BRAKE
-    + BITS_RPM
+    CAR_ID_BITS
+    + STATUS_BITS
+    + TOL_TYPE_BITS
+    + TOL_BITS
+    + EVENT_BITS
+    + SPEED_BITS
+    + THROTTLE_BITS
+    + BRAKE_BITS
+    + RPM_BITS
 )
-BITS_FUEL = uint32(7)
-BITS_LAP_FRACTION = uint32(17)
-BITS_STEERING = uint32(7)
-BITS_RESERVED_VERSION2 = uint32(4)
-BITS_SPEED_VERSION3 = uint32(18)
-BITS_RESERVED_VERSION3 = uint32(10)
+FUEL_BITS = uint32(7)
+LAP_FRACTION_BITS = uint32(17)
+STEERING_BITS = uint32(7)
+VERSION2_RESERVED_BITS = uint32(4)
+VERSION3_SPEED_BITS = uint32(18)
+VERSION3_RESERVED_BITS = uint32(10)
 
-VERSION1_SIZE_BYTES = uint32((TOTAL_BITS_COMMON + BITS_RESERVED_VERSION1) // 8)
+VERSION1_SIZE_BYTES = uint32((TOTAL_BITS_COMMON + VERSION1_RESERVED_BITS) // 8)
 VERSION2_SIZE_BYTES = uint32(
     (
         TOTAL_BITS_COMMON
-        + BITS_RESERVED_VERSION2
-        + BITS_FUEL
-        + BITS_LAP_FRACTION
-        + BITS_STEERING
-        + BITS_RESERVED_VERSION2
+        + VERSION2_RESERVED_BITS
+        + FUEL_BITS
+        + LAP_FRACTION_BITS
+        + STEERING_BITS
+        + VERSION2_RESERVED_BITS
     )
     // 8
 )
@@ -46,18 +46,15 @@ VERSION2_SIZE_BYTES = uint32(
 VERSION3_SIZE_BYTES = uint32(
     (
         TOTAL_BITS_COMMON
-        - BITS_SPEED
-        + BITS_SPEED_VERSION3
-        + BITS_FUEL
-        + BITS_LAP_FRACTION
-        + BITS_STEERING
-        + BITS_RESERVED_VERSION3
+        - SPEED_BITS
+        + VERSION3_SPEED_BITS
+        + FUEL_BITS
+        + LAP_FRACTION_BITS
+        + STEERING_BITS
+        + VERSION3_RESERVED_BITS
     )
     // 8
 )
-
-PIT_IN = float64(8)
-PIT_OUT = float64(7)
 
 
 class PerCarRaceStatusData(object):
@@ -72,39 +69,40 @@ class PerCarRaceStatusData(object):
             or byte_size == VERSION2_SIZE_BYTES
             or byte_size == VERSION3_SIZE_BYTES
         ), "RaceStatusMessage size error"
-        self._id = bit_buffer.get_bits(BITS_CAR_NUMBER)
-        self._status = bit_buffer.get_bits(BITS_STATUS)
-        self._tol_type = bit_buffer.get_bits(BITS_TOL_TYPE)
-        self._time_off_leader = float64(bit_buffer.get_bits(BITS_TOL))
-        self._event = bit_buffer.get_bits(BITS_EVENT)
+
+        self._car_id = bit_buffer.get_bits(CAR_ID_BITS)
+        self._status = bit_buffer.get_bits(STATUS_BITS)
+        self._tol_type = bit_buffer.get_bits(TOL_TYPE_BITS)
+        self._time_off_leader = float64(bit_buffer.get_bits(TOL_BITS))
+        self._event = bit_buffer.get_bits(EVENT_BITS)
 
         if byte_size == VERSION3_SIZE_BYTES:
-            self._speed = bit_buffer.get_bits(BITS_SPEED_VERSION3)
+            self._speed = bit_buffer.get_bits(VERSION3_SPEED_BITS)
             self._is_version_3 = True
         else:
-            self._speed = bit_buffer.get_bits(BITS_SPEED)
+            self._speed = bit_buffer.get_bits(SPEED_BITS)
 
-        self._throttle = bit_buffer.get_bits(BITS_THROTTLE)
-        self._brake = bit_buffer.get_bits(BITS_BRAKE)
-        self._rpm = bit_buffer.get_bits(BITS_RPM) * 4
+        self._throttle = bit_buffer.get_bits(THROTTLE_BITS)
+        self._brake = bit_buffer.get_bits(BRAKE_BITS)
+        self._rpm = bit_buffer.get_bits(RPM_BITS) * 4
 
         if byte_size == VERSION1_SIZE_BYTES:
-            bit_buffer.get_bits(BITS_RESERVED_VERSION1)
+            bit_buffer.get_bits(VERSION1_RESERVED_BITS)
         elif (byte_size == VERSION2_SIZE_BYTES) or (
             byte_size == VERSION3_SIZE_BYTES
         ):
-            self._fuel = bit_buffer.get_bits(BITS_FUEL)
-            self._lap_fraction = bit_buffer.get_bits(BITS_LAP_FRACTION) / 100000
-            self._steer_angle = bit_buffer.get_bits(BITS_STEERING) - 64
+            self._fuel = bit_buffer.get_bits(FUEL_BITS)
+            self._lap_fraction = bit_buffer.get_bits(LAP_FRACTION_BITS) / 100000
+            self._steer_angle = bit_buffer.get_bits(STEERING_BITS) - 64
 
         if byte_size == VERSION2_SIZE_BYTES:
-            bit_buffer.get_bits(BITS_RESERVED_VERSION2)
+            bit_buffer.get_bits(VERSION2_RESERVED_BITS)
         elif byte_size == VERSION3_SIZE_BYTES:
-            bit_buffer.get_bits(BITS_RESERVED_VERSION3)
+            bit_buffer.get_bits(VERSION3_RESERVED_BITS)
 
     @property
     def car_id(self):
-        return int(self._id)
+        return int(self._car_id)
 
     @property
     def status(self):
