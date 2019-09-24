@@ -1,5 +1,6 @@
 from ..util import ByteBuffer
 from .header import MsgHeader
+from .base import MsgBase
 from .car_position import MsgCarPosition
 from .car_stats import MsgCarStats
 from .cup_info import MsgCupInfo
