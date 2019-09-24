@@ -23,11 +23,21 @@ def msg_car_position():
     return MsgCarPosition(raw)
 
 
-def test_vitc_time(msg_car_position):
-    vitc_time = msg_car_position.vitc_time
-    assert vitc_time == 54001272
+def test_header(msg_car_position):
+    header = msg_car_position.header
+    assert (
+        header.sync == 43981
+        and header.clock == 2
+        and header.size == 245
+        and header.byte_type == "W"
+    )
+
+
+def test_timecode(msg_car_position):
+    timecode = msg_car_position.timecode
+    assert timecode == 54001272
 
 
 def test_number_of_cars(msg_car_position):
-    number_of_cars = msg_car_position.number_of_cars
-    assert number_of_cars == 20
+    num_cars = msg_car_position.num_cars
+    assert num_cars == 20
