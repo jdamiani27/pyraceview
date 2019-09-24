@@ -1,3 +1,4 @@
+from ..messages import MsgBase
 from ..percar import PerCarPositionData
 from ..util import BitBuffer, ByteArray
 from numpy import uint32
@@ -7,8 +8,10 @@ NUM_CARS_BITS = uint32(8)
 TIMECODE_BITS = uint32(32)
 
 
-class MsgCarPosition(object):
+class MsgCarPosition(MsgBase):
     def __init__(self, msg_bytes):
+        super().__init__(msg_bytes)
+        
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
 

@@ -1,15 +1,15 @@
 from ..util import ByteBuffer
-from .MsgCarPosition import MsgCarPosition
-from .MsgCarStats import MsgCarStats
-from .MsgCupInfo import MsgCupInfo
-from .MsgHeader import MsgHeader
-from .MsgLapInfo import MsgLapInfo
-from .MsgPitLaneEvent import MsgPitLaneEvent
-from .MsgPitLaneExtended import MsgPitLaneExtended
-from .MsgPitWindow import MsgPitWindow
-from .MsgRaceStatus import MsgRaceStatus
-from .MsgTrackConfig import MsgTrackConfig
-from .MsgVitcToLap import MsgVitcToLap
+from .header import MsgHeader
+from .car_position import MsgCarPosition
+from .car_stats import MsgCarStats
+from .cup_info import MsgCupInfo
+from .lap_info import MsgLapInfo
+from .pit_lane_event import MsgPitLaneEvent
+from .pit_lane_extended import MsgPitLaneExtended
+from .pit_window import MsgPitWindow
+from .race_status import MsgRaceStatus
+from .track_config import MsgTrackConfig
+from .vitc_to_lap import MsgVitcToLap
 
 
 _parsers = {
