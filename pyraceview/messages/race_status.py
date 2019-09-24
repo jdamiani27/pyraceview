@@ -1,7 +1,7 @@
 from numpy import uint32
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarRaceStatusData
-from ..messages import MsgHeader
+from ..messages import MsgBase, MsgHeader
 
 
 TIMECODE_BITS = uint32(32)
@@ -28,7 +28,7 @@ PREAMBLE_SIZE_BYTES = uint32(
 )
 
 
-class MsgRaceStatus(object):  # extends MsgBase
+class MsgRaceStatus(MsgBase):
     def __init__(self, msg_bytes):
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)

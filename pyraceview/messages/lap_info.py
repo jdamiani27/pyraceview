@@ -1,4 +1,5 @@
 from numpy import uint32
+from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarLapData
 
@@ -13,7 +14,7 @@ FLAG_LAP_BITS = uint32(10)
 RESERVED_BITS = uint32(3)
 
 
-class MsgLapInfo(object):
+class MsgLapInfo(MsgBase):
     def __init__(self, msg_bytes):
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)

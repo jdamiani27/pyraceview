@@ -1,7 +1,8 @@
+from ..messages import MsgBase
 from ..util import ByteArray
 
 
-class MsgPitLaneEvent(object):
+class MsgPitLaneEvent(MsgBase):
     def __init__(self, msg_bytes):
         byte_array = ByteArray(msg_bytes)
         byte_array.position = 7

@@ -1,4 +1,5 @@
 from numpy import uint32
+from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 
 
@@ -9,7 +10,7 @@ TIMECODE_INDICES_BITS = uint32(17)
 FLAGS_BITS = uint32(3)
 
 
-class MsgVitcToLap(object):
+class MsgVitcToLap(MsgBase):
     def __init__(self, msg_bytes):
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)

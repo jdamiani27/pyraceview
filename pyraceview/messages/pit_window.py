@@ -1,4 +1,5 @@
 from numpy import uint32
+from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarPitWindowData
 
@@ -6,7 +7,7 @@ from ..percar import PerCarPitWindowData
 NUM_CARS_BITS = uint32(8)
 
 
-class MsgPitWindow(object):
+class MsgPitWindow(MsgBase):
     def __init__(self, msg_bytes):
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)

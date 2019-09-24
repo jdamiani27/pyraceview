@@ -1,8 +1,9 @@
+from ..messages import MsgBase
 from ..util import Endian, ByteArray
 from ..percar import PerCarPitStopExtendedData
 
 
-class MsgPitLaneExtended(object):
+class MsgPitLaneExtended(MsgBase):
     def __init__(self, msg_bytes):
         byte_array = ByteArray(msg_bytes)
         endian = byte_array.endian

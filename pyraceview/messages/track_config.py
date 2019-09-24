@@ -1,4 +1,5 @@
 from numpy import uint32
+from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 
 
@@ -8,7 +9,7 @@ ORIGIN_Z_BITS = uint32(32)
 TRACK_NAME_BITS = uint32(64)
 
 
-class MsgTrackConfig(object):
+class MsgTrackConfig(MsgBase):
     def __init__(self, msg_bytes):
         byte_array = ByteArray(msg_bytes)
         bit_buffer = BitBuffer(byte_array)
