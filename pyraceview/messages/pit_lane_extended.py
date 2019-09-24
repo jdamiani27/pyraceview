@@ -5,6 +5,8 @@ from ..percar import PerCarPitStopExtendedData
 
 class MsgPitLaneExtended(MsgBase):
     def __init__(self, msg_bytes):
+        super().__init__(msg_bytes)
+        
         byte_array = ByteArray(msg_bytes)
         endian = byte_array.endian
         byte_array.position = 7

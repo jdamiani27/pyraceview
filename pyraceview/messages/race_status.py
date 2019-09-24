@@ -30,6 +30,8 @@ PREAMBLE_SIZE_BYTES = uint32(
 
 class MsgRaceStatus(MsgBase):
     def __init__(self, msg_bytes):
+        super().__init__(msg_bytes)
+        
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
 

@@ -11,6 +11,8 @@ TRACK_NAME_BITS = uint32(64)
 
 class MsgTrackConfig(MsgBase):
     def __init__(self, msg_bytes):
+        super().__init__(msg_bytes)
+        
         byte_array = ByteArray(msg_bytes)
         bit_buffer = BitBuffer(byte_array)
         bit_buffer.set_position(7)

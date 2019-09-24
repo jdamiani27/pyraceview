@@ -10,6 +10,8 @@ NUM_CARS_BITS = uint32(8)
 
 class MsgCarStats(MsgBase):
     def __init__(self, msg_bytes):
+        super().__init__(msg_bytes)
+        
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
 
