@@ -43,9 +43,8 @@ class MsgRaceStatus(MsgBase):
 
         bit_buffer.get_bits(RESERVED_BITS)
 
-        msg_header = MsgHeader(msg_bytes)
         byte_size = uint32(
-            (msg_header.size - PREAMBLE_SIZE_BYTES) // self._num_cars
+            (self.header.size - PREAMBLE_SIZE_BYTES) // self._num_cars
         )
 
         self._car_data = []
