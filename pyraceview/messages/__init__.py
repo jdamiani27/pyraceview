@@ -4,6 +4,7 @@ from .base import MsgBase
 from .car_position import MsgCarPosition
 from .car_stats import MsgCarStats
 from .cup_info import MsgCupInfo
+from .heartbeat import MsgHeartbeat
 from .lap_info import MsgLapInfo
 from .pit_lane_event import MsgPitLaneEvent
 from .pit_lane_extended import MsgPitLaneExtended
@@ -19,6 +20,7 @@ _parsers = {
     "d": MsgPitLaneExtended,
     "C": MsgCupInfo,
     "F": MsgPitWindow,
+    "H": MsgHeartbeat,
     "l": MsgLapInfo,
     "O": MsgTrackConfig,
     "P": MsgPitLaneEvent,
