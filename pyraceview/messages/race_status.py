@@ -1,7 +1,7 @@
 from numpy import uint32
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarRaceStatusData
-from ..messages import MsgBase, MsgHeader
+from ..messages import MsgBase
 
 
 TIMECODE_BITS = uint32(32)
