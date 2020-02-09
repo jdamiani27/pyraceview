@@ -66,9 +66,9 @@ In order to parse the entire message, we must use the header to lookup the corre
 Messages, such as `MsgCarPosition`, have attributes with metadata about the message
 
 ```python
->>> msg.number_of_cars
+>>> msg.num_cars
 40
->>> msg.vitc_time
+>>> msg.timecode
 52338356
 ```
 
