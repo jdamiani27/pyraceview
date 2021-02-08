@@ -1,4 +1,8 @@
-class CarStats(object):
+from enum import IntEnum
+
+
+# Use IntEnum instead of Enum to allow for JSON serialization
+class CarStats(IntEnum):
     CAR_STATUS_RUNNING = 0
     CAR_STATUS_OUT_OF_RACE_ACCIDENT = 1
     CAR_STATUS_OUT_OF_RACE_ENGINE = 2
