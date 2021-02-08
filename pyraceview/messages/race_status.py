@@ -2,6 +2,8 @@ from numpy import uint32
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarRaceStatusData
 from ..messages import MsgBase
+from dataclasses import dataclass
+from typing import List
 
 
 TIMECODE_BITS = uint32(32)
@@ -28,62 +30,40 @@ PREAMBLE_SIZE_BYTES = uint32(
 )
 
 
+@dataclass
 class MsgRaceStatus(MsgBase):
-    def __init__(self, msg_bytes):
+    timecode: int
+    lap: int
+    flag: int
+    num_cautions: int
+    last_flag_change_lap: int
+    num_cars: int
+    sunset: int
+    car_data: List[PerCarRaceStatusData]
+
+    def __init__(self, msg_bytes: bytes):
         super().__init__(msg_bytes)
         
         bit_buffer = BitBuffer(ByteArray(msg_bytes))
         bit_buffer.set_position(7)
 
-        self._timecode = int(bit_buffer.get_bits(TIMECODE_BITS))
-        self._lap = int(bit_buffer.get_bits(LAP_BITS))
-        self._flag = int(bit_buffer.get_bits(FLAG_BITS))
-        self._num_cautions = int(bit_buffer.get_bits(NUM_CAUTIONS_BITS))
-        self._last_flag_change_lap = int(bit_buffer.get_bits(FLAG_LAP_BITS))
-        self._num_cars = int(bit_buffer.get_bits(NUM_CARS_BITS))
-        self._sunset = int(bit_buffer.get_bits(SUNSET_BITS))
+        self.timecode = int(bit_buffer.get_bits(TIMECODE_BITS))
+        self.lap = int(bit_buffer.get_bits(LAP_BITS))
+        self.flag = int(bit_buffer.get_bits(FLAG_BITS))
+        self.num_cautions = int(bit_buffer.get_bits(NUM_CAUTIONS_BITS))
+        self.last_flag_change_lap = int(bit_buffer.get_bits(FLAG_LAP_BITS))
+        self.num_cars = int(bit_buffer.get_bits(NUM_CARS_BITS))
+        self.sunset = int(bit_buffer.get_bits(SUNSET_BITS))
 
         bit_buffer.get_bits(RESERVED_BITS)
 
         byte_size = uint32(
-            (self.header.size - PREAMBLE_SIZE_BYTES) // self._num_cars
+            (self.header.size - PREAMBLE_SIZE_BYTES) // self.num_cars
         )
 
-        self._car_data = []
+        self.car_data = []
 
-        for _ in range(self._num_cars):
-            self._car_data.append(
+        for _ in range(self.num_cars):
+            self.car_data.append(
                 PerCarRaceStatusData(bit_buffer, byte_size)
             )
-
-    @property
-    def flag(self):
-        return self._flag
-
-    @property
-    def last_flag_change_lap(self):
-        return self._last_flag_change_lap
-
-    @property
-    def num_cautions(self):
-        return self._num_cautions
-
-    @property
-    def timecode(self):
-        return self._timecode
-
-    @property
-    def lap(self):
-        return self._lap
-
-    @property
-    def car_data(self):
-        return self._car_data
-
-    @property
-    def num_cars(self):
-        return self._num_cars
-
-    @property
-    def sunset(self):
-        return self._sunset
