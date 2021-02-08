@@ -6,7 +6,7 @@ DESCRIPTION = 'Parse messages from NASCAR RaceView to extract race data'
 URL = 'https://github.com/jdamiani27/pyraceview'
 EMAIL = 'me@jasondamiani.com'
 AUTHOR = 'Jason Damiani'
-REQUIRES_PYTHON = '>=3.6.0'
+REQUIRES_PYTHON = '>=3.7.0'
 
 REQUIRED = [
     'numpy'

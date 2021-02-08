@@ -1,5 +1,7 @@
 from numpy import uint32, float64
 from ..models import CarStats
+from dataclasses import dataclass
+from ..util import BitBuffer
 
 
 CAR_ID_BITS = uint32(8)
@@ -57,12 +59,22 @@ VERSION3_SIZE_BYTES = uint32(
 )
 
 
-class PerCarRaceStatusData(object):
-    def __init__(self, bit_buffer, byte_size):
-        self._is_version_3 = False
-        self._fuel = -1
-        self._lap_fraction = float64(-1)
-        self._steer_angle = -1
+@dataclass
+class PerCarRaceStatusData:
+    car_id: int
+    tol_type: int
+    status: CarStats
+    time_off_leader: float
+    event: int
+    speed: float
+    throttle: int
+    brake: int
+    rpm: int
+    fuel: int = -1
+    lap_fraction: float = -1.0
+    steer_angle: int = -1    
+
+    def __init__(self, bit_buffer: BitBuffer, byte_size: uint32):
 
         assert (
             byte_size == VERSION1_SIZE_BYTES
@@ -70,84 +82,38 @@ class PerCarRaceStatusData(object):
             or byte_size == VERSION3_SIZE_BYTES
         ), "RaceStatusMessage size error"
 
-        self._car_id = bit_buffer.get_bits(CAR_ID_BITS)
-        self._status = bit_buffer.get_bits(STATUS_BITS)
-        self._tol_type = bit_buffer.get_bits(TOL_TYPE_BITS)
-        self._time_off_leader = float64(bit_buffer.get_bits(TOL_BITS))
-        self._event = bit_buffer.get_bits(EVENT_BITS)
+        self.car_id = int(bit_buffer.get_bits(CAR_ID_BITS))
+
+        _status = int(bit_buffer.get_bits(STATUS_BITS))
+
+        if _status == CarStats.CAR_STATUS_UNKNOWN:
+            self.status = CarStats.CAR_STATUS_PRERACE
+        else:
+            self.status = CarStats(_status)
+
+        self.tol_type = int(bit_buffer.get_bits(TOL_TYPE_BITS))
+        self.time_off_leader = float(bit_buffer.get_bits(TOL_BITS))
+        self.event = int(bit_buffer.get_bits(EVENT_BITS))
 
         if byte_size == VERSION3_SIZE_BYTES:
-            self._speed = bit_buffer.get_bits(VERSION3_SPEED_BITS)
-            self._is_version_3 = True
+            self.speed = float(bit_buffer.get_bits(VERSION3_SPEED_BITS) / 1000)
         else:
-            self._speed = bit_buffer.get_bits(SPEED_BITS)
+            self.speed = float(bit_buffer.get_bits(SPEED_BITS))
 
-        self._throttle = bit_buffer.get_bits(THROTTLE_BITS)
-        self._brake = bit_buffer.get_bits(BRAKE_BITS)
-        self._rpm = bit_buffer.get_bits(RPM_BITS) * 4
+        self.throttle = int(bit_buffer.get_bits(THROTTLE_BITS))
+        self.brake = int(bit_buffer.get_bits(BRAKE_BITS))
+        self.rpm = int(bit_buffer.get_bits(RPM_BITS) * 4)
 
         if byte_size == VERSION1_SIZE_BYTES:
             bit_buffer.get_bits(VERSION1_RESERVED_BITS)
         elif (byte_size == VERSION2_SIZE_BYTES) or (
             byte_size == VERSION3_SIZE_BYTES
         ):
-            self._fuel = bit_buffer.get_bits(FUEL_BITS)
-            self._lap_fraction = bit_buffer.get_bits(LAP_FRACTION_BITS) / 100000
-            self._steer_angle = bit_buffer.get_bits(STEERING_BITS) - 64
+            self.fuel = int(bit_buffer.get_bits(FUEL_BITS))
+            self.lap_fraction = float(bit_buffer.get_bits(LAP_FRACTION_BITS) / 100000)
+            self.steer_angle = int(bit_buffer.get_bits(STEERING_BITS) - 64)
 
         if byte_size == VERSION2_SIZE_BYTES:
             bit_buffer.get_bits(VERSION2_RESERVED_BITS)
         elif byte_size == VERSION3_SIZE_BYTES:
             bit_buffer.get_bits(VERSION3_RESERVED_BITS)
-
-    @property
-    def car_id(self):
-        return int(self._car_id)
-
-    @property
-    def status(self):
-        if int(self._status) == CarStats.CAR_STATUS_UNKNOWN:
-            return CarStats.CAR_STATUS_PRERACE
-        else:
-            return int(self._status)
-
-    @property
-    def tol_type(self):
-        return int(self._tol_type)
-
-    @property
-    def time_off_leader(self):
-        return float(self._time_off_leader)
-
-    @property
-    def event(self):
-        return int(self._event)
-
-    @property
-    def speed(self):
-        s = float64(self._speed / 1000) if self._is_version_3 else float64(self._speed)
-        return float(s)
-
-    @property
-    def throttle(self):
-        return int(self._throttle)
-
-    @property
-    def brake(self):
-        return int(self._brake)
-
-    @property
-    def rpm(self):
-        return int(self._rpm)
-
-    @property
-    def fuel(self):
-        return int(self._fuel)
-
-    @property
-    def steer_angle(self):
-        return int(self._steer_angle)
-
-    @property
-    def lap_fraction(self):
-        return float(self._lap_fraction)

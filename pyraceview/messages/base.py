@@ -1,10 +1,10 @@
 from ..messages import MsgHeader
+from dataclasses import dataclass
 
 
+@dataclass
 class MsgBase:
-    def __init__(self, msg_bytes):
-        self._header = MsgHeader(msg_bytes)
+    header: MsgHeader
 
-    @property
-    def header(self):
-        return self._header
+    def __init__(self, msg_bytes: bytes):
+        self.header = MsgHeader(msg_bytes)
