@@ -1,4 +1,5 @@
 import pytest
+import math
 from pyraceview.messages import MsgCarPosition
 
 
@@ -32,17 +33,21 @@ def test_position(car):
     x = car.pos_x
     y = car.pos_y
     z = car.pos_z
-    assert (x, y, z) == (-1458.2, 346.90000000000003, 81.95)
+    assert (
+        math.isclose(x, -1458.2)
+        and math.isclose(y, 346.90000000000003)
+        and math.isclose(z, 81.95)
+    )
 
 
 def test_heading(car):
     x = car.heading_x
     y = car.heading_y
     z = car.heading_z
-    assert (x, y, z) == (
-        0.999998823451702,
-        1.176549336290695e-06,
-        -0.0015339797350831937,
+    assert (
+        math.isclose(x, 0.999998823451702)
+        and math.isclose(y, 1.176549336290695e-06)
+        and math.isclose(z, -0.0015339797350831937)
     )
 
 
@@ -50,8 +55,8 @@ def test_norm(car):
     x = car.norm_x
     y = car.norm_y
     z = car.norm_z
-    assert (x, y, z) == (
-        0.001533980186284766,
-        -0.0007669903187427239,
-        0.999998529314238,
+    assert (
+        math.isclose(x, 0.001533980186284766)
+        and math.isclose(y, -0.0007669903187427239)
+        and math.isclose(z, 0.999998529314238)
     )
