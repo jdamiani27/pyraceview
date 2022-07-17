@@ -1,13 +1,12 @@
-from numpy import uint32
 from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from dataclasses import dataclass
 
 
-ORIGIN_X_BITS = uint32(32)
-ORIGIN_Y_BITS = uint32(32)
-ORIGIN_Z_BITS = uint32(32)
-TRACK_NAME_BITS = uint32(64)
+ORIGIN_X_BITS = 32
+ORIGIN_Y_BITS = 32
+ORIGIN_Z_BITS = 32
+TRACK_NAME_BITS = 64
 
 
 @dataclass
@@ -27,6 +26,4 @@ class MsgTrackConfig(MsgBase):
         self.local_origin_x = int(bit_buffer.get_bits(ORIGIN_X_BITS))
         self.local_origin_y = int(bit_buffer.get_bits(ORIGIN_Y_BITS))
         self.local_origin_z = int(bit_buffer.get_bits(ORIGIN_Z_BITS))
-        self.track_name = byte_array.read_utf_bytes(
-            TRACK_NAME_BITS // uint32(8)
-        )
+        self.track_name = byte_array.read_utf_bytes(TRACK_NAME_BITS // 8)

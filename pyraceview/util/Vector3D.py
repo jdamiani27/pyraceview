@@ -1,4 +1,4 @@
-import numpy as np
+import math
 
 
 class Vector3D(object):
@@ -7,10 +7,15 @@ class Vector3D(object):
     Z_POS = 2
 
     def __init__(self, x=0.0, y=0.0, z=0.0):
-        self._v = np.array([x, y, z])
+        self._v = [x, y, z]
+
+    @staticmethod
+    def norm(vector):
+        return math.sqrt(sum(i**2 for i in vector))
 
     def normalize(self):
-        self._v = self._v / np.linalg.norm(self._v)
+        magnitude = self.norm(self._v)
+        self._v = [i / magnitude for i in self._v]
 
     @property
     def x(self):

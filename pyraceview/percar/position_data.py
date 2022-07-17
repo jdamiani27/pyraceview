@@ -1,18 +1,17 @@
 import math
-from numpy import uint32, float64, pi
 from ..util import BitBuffer, Vector3D
 from dataclasses import dataclass
 
 
-CAR_ID_BITS = uint32(8)
-CAR_POS_X_BITS = uint32(18)
-CAR_POS_Y_BITS = uint32(18)
-CAR_POS_Z_BITS = uint32(15)
-ANGLE_ENCODED_NORM_X_BITS = uint32(12)
-ANGLE_ENCODED_NORM_Y_BITS = uint32(12)
-HEADING_BITS = uint32(12)
-RESERVED_BITS = uint32(1)
-CAR_SIZE_BITS = uint32(
+CAR_ID_BITS = 8
+CAR_POS_X_BITS = 18
+CAR_POS_Y_BITS = 18
+CAR_POS_Z_BITS = 15
+ANGLE_ENCODED_NORM_X_BITS = 12
+ANGLE_ENCODED_NORM_Y_BITS = 12
+HEADING_BITS = 12
+RESERVED_BITS = 1
+CAR_SIZE_BITS = (
     CAR_ID_BITS
     + CAR_POS_X_BITS
     + CAR_POS_Y_BITS
@@ -23,12 +22,12 @@ CAR_SIZE_BITS = uint32(
     + RESERVED_BITS
 )
 
-POS_X_RESOLUTION = float64(0.1)
-POS_Y_RESOLUTION = float64(0.1)
-POS_Z_RESOLUTION = float64(0.05)
-NORM_X_RESOLUTION = float64(180 / 2 ** ANGLE_ENCODED_NORM_X_BITS)
-NORM_Y_RESOLUTION = float64(180 / 2 ** ANGLE_ENCODED_NORM_Y_BITS)
-HEADING_RESOLUTION = float64(180 / 2 ** (HEADING_BITS - uint32(1)))
+POS_X_RESOLUTION = 0.1
+POS_Y_RESOLUTION = 0.1
+POS_Z_RESOLUTION = 0.05
+NORM_X_RESOLUTION = 180 / 2 ** ANGLE_ENCODED_NORM_X_BITS
+NORM_Y_RESOLUTION = 180 / 2 ** ANGLE_ENCODED_NORM_Y_BITS
+HEADING_RESOLUTION = 180 / 2 ** (HEADING_BITS - 1)
 
 
 @dataclass
@@ -48,10 +47,10 @@ class PerCarPositionData:
         self.car_id = int(bit_buffer.get_bits(CAR_ID_BITS))
 
         # Read the car position
-        pos_x_unsign = uint32(bit_buffer.get_bits(CAR_POS_X_BITS))
-        pos_y_unsign = uint32(bit_buffer.get_bits(CAR_POS_Y_BITS))
-        pos_z_unsign = uint32(bit_buffer.get_bits(CAR_POS_Z_BITS))
-        
+        pos_x_unsign = bit_buffer.get_bits(CAR_POS_X_BITS)
+        pos_y_unsign = bit_buffer.get_bits(CAR_POS_Y_BITS)
+        pos_z_unsign = bit_buffer.get_bits(CAR_POS_Z_BITS)
+
         self.pos_x = float(
             BitBuffer.make_bits_signed(pos_x_unsign, CAR_POS_X_BITS)
             * POS_X_RESOLUTION

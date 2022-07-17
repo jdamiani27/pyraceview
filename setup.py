@@ -8,9 +8,6 @@ EMAIL = 'me@jasondamiani.com'
 AUTHOR = 'Jason Damiani'
 REQUIRES_PYTHON = '>=3.7.0'
 
-REQUIRED = [
-    'numpy'
-]
 
 setup(
     name=NAME,
@@ -22,7 +19,6 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=find_packages(),
-    install_requires=REQUIRED,
     license='MIT',
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",

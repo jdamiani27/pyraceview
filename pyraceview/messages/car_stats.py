@@ -1,4 +1,3 @@
-from numpy import uint32
 from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarStatsData
@@ -6,8 +5,8 @@ from dataclasses import dataclass
 from typing import List
 
 
-TIMECODE_BITS = uint32(32)
-NUM_CARS_BITS = uint32(8)
+TIMECODE_BITS = 32
+NUM_CARS_BITS = 8
 
 
 @dataclass

@@ -1,4 +1,3 @@
-from numpy import uint32
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarRaceStatusData
 from ..messages import MsgBase
@@ -6,17 +5,16 @@ from dataclasses import dataclass
 from typing import List
 
 
-TIMECODE_BITS = uint32(32)
-LAP_BITS = uint32(10)
-FLAG_BITS = uint32(3)
-NUM_CAUTIONS_BITS = uint32(5)
-FLAG_LAP_BITS = uint32(10)
-NUM_CARS_BITS = uint32(6)
-SUNSET_BITS = uint32(3)
-RESERVED_BITS = uint32(3)
+TIMECODE_BITS = 32
+LAP_BITS = 10
+FLAG_BITS = 3
+NUM_CAUTIONS_BITS = 5
+FLAG_LAP_BITS = 10
+NUM_CARS_BITS = 6
+SUNSET_BITS = 3
+RESERVED_BITS = 3
 
-PREAMBLE_SIZE_BYTES = uint32(
-    (
+PREAMBLE_SIZE_BYTES = (
         TIMECODE_BITS
         + LAP_BITS
         + FLAG_BITS
@@ -25,9 +23,7 @@ PREAMBLE_SIZE_BYTES = uint32(
         + NUM_CARS_BITS
         + SUNSET_BITS
         + RESERVED_BITS
-    )
-    // 8
-)
+    ) // 8
 
 
 @dataclass
@@ -57,9 +53,7 @@ class MsgRaceStatus(MsgBase):
 
         bit_buffer.get_bits(RESERVED_BITS)
 
-        byte_size = uint32(
-            (self.header.size - PREAMBLE_SIZE_BYTES) // self.num_cars
-        )
+        byte_size = (self.header.size - PREAMBLE_SIZE_BYTES) // self.num_cars
 
         self.car_data = []
 
