@@ -25,7 +25,8 @@ class ByteArray(object):
         return self.read(self.endian.value + "I")
 
     def read_utf_bytes(self, length):
-        return ctypes.create_string_buffer(self.read(str(length) + "s")).decode("utf-8")
+        c_string = ctypes.create_string_buffer(self.read(str(length) + "s"))
+        return c_string.value.decode("utf-8")
 
     def read(self, format_char):
         val = struct.unpack_from(format_char, self.buffer)[0]
