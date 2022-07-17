@@ -29,8 +29,7 @@ class ByteArray(object):
         # return self.read(np.dtype(np.uint32).newbyteorder(self._endian.value))
 
     def read_utf_bytes(self, length):
-        return self.read(str(length) + "s").decode("utf-8")
-        # return self.read(np.dtype(("S", length))).decode("utf-8")
+        return ctypes.create_string_buffer(self.read(str(length) + "s")).decode("utf-8")
 
     def read(self, format_char):
         # val = np.frombuffer(self.buffer, dtype=dtype, count=1)[0]
