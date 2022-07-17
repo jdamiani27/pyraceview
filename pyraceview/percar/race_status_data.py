@@ -1,20 +1,19 @@
-from numpy import uint32, float64
 from ..models import CarStats
 from dataclasses import dataclass
 from ..util import BitBuffer
 
 
-CAR_ID_BITS = uint32(8)
-STATUS_BITS = uint32(3)
-TOL_TYPE_BITS = uint32(1)
-TOL_BITS = uint32(19)
-EVENT_BITS = uint32(4)
-SPEED_BITS = uint32(8)
-THROTTLE_BITS = uint32(7)
-BRAKE_BITS = uint32(7)
-RPM_BITS = uint32(12)
-VERSION1_RESERVED_BITS = uint32(3)
-TOTAL_BITS_COMMON = uint32(
+CAR_ID_BITS = 8
+STATUS_BITS = 3
+TOL_TYPE_BITS = 1
+TOL_BITS = 19
+EVENT_BITS = 4
+SPEED_BITS = 8
+THROTTLE_BITS = 7
+BRAKE_BITS = 7
+RPM_BITS = 12
+VERSION1_RESERVED_BITS = 3
+TOTAL_BITS_COMMON = (
     CAR_ID_BITS
     + STATUS_BITS
     + TOL_TYPE_BITS
@@ -25,15 +24,15 @@ TOTAL_BITS_COMMON = uint32(
     + BRAKE_BITS
     + RPM_BITS
 )
-FUEL_BITS = uint32(7)
-LAP_FRACTION_BITS = uint32(17)
-STEERING_BITS = uint32(7)
-VERSION2_RESERVED_BITS = uint32(4)
-VERSION3_SPEED_BITS = uint32(18)
-VERSION3_RESERVED_BITS = uint32(10)
+FUEL_BITS = 7
+LAP_FRACTION_BITS = 17
+STEERING_BITS = 7
+VERSION2_RESERVED_BITS = 4
+VERSION3_SPEED_BITS = 18
+VERSION3_RESERVED_BITS = 10
 
-VERSION1_SIZE_BYTES = uint32((TOTAL_BITS_COMMON + VERSION1_RESERVED_BITS) // 8)
-VERSION2_SIZE_BYTES = uint32(
+VERSION1_SIZE_BYTES = (TOTAL_BITS_COMMON + VERSION1_RESERVED_BITS) // 8
+VERSION2_SIZE_BYTES = (
     (
         TOTAL_BITS_COMMON
         + VERSION2_RESERVED_BITS
@@ -45,7 +44,7 @@ VERSION2_SIZE_BYTES = uint32(
     // 8
 )
 
-VERSION3_SIZE_BYTES = uint32(
+VERSION3_SIZE_BYTES = (
     (
         TOTAL_BITS_COMMON
         - SPEED_BITS
@@ -74,7 +73,7 @@ class PerCarRaceStatusData:
     lap_fraction: float = -1.0
     steer_angle: int = -1    
 
-    def __init__(self, bit_buffer: BitBuffer, byte_size: uint32):
+    def __init__(self, bit_buffer: BitBuffer, byte_size: int):
 
         assert (
             byte_size == VERSION1_SIZE_BYTES

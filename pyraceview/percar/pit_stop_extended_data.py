@@ -1,13 +1,12 @@
 from ..models import Flag
-from numpy import uint32
 from dataclasses import dataclass
 from ..util import ByteArray
 
 
 TIRES_IS_ESTIMATE_BITMASK = 1
 ABNORMAL_PIT_BITMASK = 2
-EXPANDED_TIME_FIELDS_BITMASK = uint32(128)
-FLAG_BITMASK = uint32(15)
+EXPANDED_TIME_FIELDS_BITMASK = 128
+FLAG_BITMASK = 15
 
 FLAG_CONVERSION = {
     1: Flag.PRE_RACE,

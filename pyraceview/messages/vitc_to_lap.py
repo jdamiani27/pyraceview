@@ -1,15 +1,14 @@
-from numpy import uint32
 from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from dataclasses import dataclass
 from typing import List
 
 
-START_LAP_BITS = uint32(12)
-NUM_LAP_ENTRIES_BITS = uint32(12)
-RESERVED_BITS = uint32(8)
-TIMECODE_INDICES_BITS = uint32(17)
-FLAGS_BITS = uint32(3)
+START_LAP_BITS = 12
+NUM_LAP_ENTRIES_BITS = 12
+RESERVED_BITS = 8
+TIMECODE_INDICES_BITS = 17
+FLAGS_BITS = 3
 
 
 @dataclass

@@ -1,4 +1,3 @@
-from numpy import uint32
 from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarLapData
@@ -6,14 +5,14 @@ from dataclasses import dataclass
 from typing import List
 
 
-TIMECODE_BITS = uint32(32)
-LAP_BITS = uint32(10)
-NUM_CARS_BITS = uint32(6)
-LEAD_CHANGES_BITS = uint32(8)
-NUM_LEADERS_BITS = uint32(6)
-NUM_CAUTIONS_BITS = uint32(5)
-FLAG_LAP_BITS = uint32(10)
-RESERVED_BITS = uint32(3)
+TIMECODE_BITS = 32
+LAP_BITS = 10
+NUM_CARS_BITS = 6
+LEAD_CHANGES_BITS = 8
+NUM_LEADERS_BITS = 6
+NUM_CAUTIONS_BITS = 5
+FLAG_LAP_BITS = 10
+RESERVED_BITS = 3
 
 
 @dataclass

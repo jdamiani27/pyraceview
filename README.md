@@ -7,7 +7,6 @@ Currently, PyRaceview does not provide client code to retrieve raw data from the
 ## Requirements
 
 Python 3.7+
-- [NumPy](https://numpy.org) for C data type unpacking
 
 ## Installation
 

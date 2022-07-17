@@ -1,4 +1,3 @@
-from numpy import uint32
 from ..messages import MsgBase
 from ..util import BitBuffer, ByteArray
 from ..percar import PerCarPointsData
@@ -6,8 +5,8 @@ from dataclasses import dataclass
 from typing import List
 
 
-LAP_BITS = uint32(10)
-NUM_CARS_BITS = uint32(6)
+LAP_BITS = 10
+NUM_CARS_BITS = 6
 
 
 @dataclass

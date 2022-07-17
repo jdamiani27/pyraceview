@@ -1,11 +1,10 @@
-from numpy import uint32
 from dataclasses import dataclass
 from ..util import BitBuffer
 
 
-CAR_ID_BITS = uint32(8)
-POINTS_BITS = uint32(13)
-RESERVED_BITS = uint32(3)
+CAR_ID_BITS = 8
+POINTS_BITS = 13
+RESERVED_BITS = 3
 
 
 @dataclass

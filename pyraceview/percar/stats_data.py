@@ -1,14 +1,13 @@
-from numpy import uint32
 from dataclasses import dataclass
 from ..util import BitBuffer
 
 
-CAR_ID_BITS = uint32(8)
-TOP_SPEED_BITS = uint32(16)
-FASTEST_TIME_BITS = uint32(19)
-AVERAGE_LAP_BITS = uint32(19)
-AVERAGE_SPEED_BITS = uint32(16)
-RESERVED_BITS = uint32(2)
+CAR_ID_BITS = 8
+TOP_SPEED_BITS = 16
+FASTEST_TIME_BITS = 19
+AVERAGE_LAP_BITS = 19
+AVERAGE_SPEED_BITS = 16
+RESERVED_BITS = 2
 
 
 @dataclass
